@@ -20,8 +20,8 @@
 		"title": "About"
 	},
 	"contact": {
-		"title": "Twitter ↗",
 		"type": "page",
+		"title": "Twitter ↗",
 		"href": "https://twitter.com/_Crossbell",
 		"newWindow": true
 	}

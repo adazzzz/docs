@@ -1,0 +1,75 @@
+---
+title: Protocol
+---
+
+# Protocol
+
+All social activities can be characterized as interactions between different entities.
+
+# Entities
+
+Crossbell is EVM-compatible, so two types of entities are inherited directly: crypto addresses and assets (NFTs/cryptocurrencies/etc.). However, in order to create a more comprehensive image for social activities, two additional entities are introduced in the Crossbell world: characters and notes. Characters are created and owned by a crypto address, and the character owner can post any notes under one of her characters.
+
+# Interaction
+
+The most basic interaction that takes place in social activities is "following". However, there are numerous other types of interactions, such as:
+
+-  character1 "super follows" character2
+-  character3 "dates" with character4
+-  note2 "comments" on note1
+-  character1 "shares" note1 (interactions between different types of entities are also possible)
+-  character1 "blocks" address3
+-  etc.
+
+In Crossbell, all such interactions are generalized as "links". Links can be emitted from either characters or notes, and they can point to any entity on Crossbell, or any external entity with a URI. Each link also has a type (e.g. "follow", "comment", etc.), which suggests its underlying meaning.
+
+|  | Ethereum address | Character | Note | Asset on Crossbell (NFT/cryptocurrency/etc.) | Any URI |
+| --- | --- | --- | --- | --- | --- |
+| Character | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Note | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+# Capitalization
+
+Capitalization is closely related to ownership. It is not always easy to determine which entities should be native assets on Crossbell. After careful consideration, two types of information are proposed as native assets, and a manual approach is available for capitalizing non-asset information.
+
+**Characters**
+
+Each character is natively created as an NFT.
+
+**Linklists**
+
+All the linking objects with the same link type, emitted from a character, are natively aggregated as an NFT. Linklists can only be transferred along with the character NFT. As linking objects emitted from notes do not aggregate as same meaningful and valuable information as those from a character, they are not natively capitalized as NFTs.
+
+**Mint**
+
+In addition to the two native assets on Crossbell, there is a manual approach called "Mint" for converting non-NFT information into an NFT. For example, a note posted under a character is not natively an NFT. To manually capitalize such valuable or memorable single notes, a crypto address can mint the note to receive an NFT. It is like the note being a manual draft by the author, and when someone else mints it, the content is published as a book. The more users mint the notes, the more books are printed and sold.
+
+# Modularity
+
+The protocol is composed of instances, links, and mints, which help to sketch the basics of social activities. For further flexibility and composability, two types of modules can be configured on the action object: link modules and mint modules. Each module is a standalone contract that adheres to a specific interface. The undetermined states within the contract hold unlimited potential. When an instance is linked, the corresponding link module is triggered; when a note is minted, the corresponding mint module is triggered. For example, a character can set a link module for itself so that the first 1000 followers get a special NFT; a character owner can set a mint module for any of her notes, requiring the minter to pay a specific amount of tokens.
+
+Link modules cannot revert link interactions, as links are essentially used to deliver information within the context of social activities. Mint modules, on the other hand, can revert mint interactions, as minting generates new assets and involves property rights or copyright.
+
+# Deployed Blockchain and Contract Address
+
+The protocol has been deployed on Crossbell network. The faucet and explorer can be found at:
+
+-  [Faucet](https://faucet.crossbell.io)
+-  [Explorer](https://scan.crossbell.io)
+
+The contract has been deployed at:
+
+| Web3Entry Proxy (for interactions only) | 0xa6f969045641Cf486a747A2688F3a5A6d43cd0D8 |
+| --- | --- |
+| Web3Entry Implementation | 0x4dd1ed784b0C2bdF58a16e6311ad8E3f533401e8 |
+| Linklist Token Proxy | 0xFc8C75bD5c26F50798758f387B698f207a016b6A |
+| Linklist Token Implementation | 0x7A74557aC8b06D5f13d15BF7444D0c524eB820D0 |
+| InteractionLogic | 0x315f6A340441878A09692d0D59CeE826ff57CDBb |
+| LinkModuleLogic | 0xFC63B6Af4b5436d7Cf0e77782dFf8756f42F71AD |
+| CharacterLogic | 0xf9eC2A9338C81DF2a771e0BBC98C8F43787CA805 |
+| PostLogic | 0xEA971E76e375438ae6E48EBF90D8c6635475a613 |
+| LinkLogic | 0x9BAdE758A6F1A72fecc9922516fa75C8A624D990 |
+| MintNFT | 0x7bB160FAbC629a8B288499cE9B48eEabD46CF3e1 |
+| Periphery | 0x96e96b7AF62D628cE7eb2016D2c1D2786614eA73 |
+| Periphery Implementation | 0x59702aB0abcD5aE5F5e25AF664B93dab59401C32 |
+| Resolver | 0xa5fa5302Be191fA9f8e7C35Cf5758D8bfDF4C90f |

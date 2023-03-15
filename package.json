@@ -1,0 +1,36 @@
+{
+	"name": "crossbell-docs",
+	"version": "0.0.1",
+	"private": true,
+	"description": "docs for crossbell",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Crossbell-Box/docs.git"
+	},
+	"author": "Crossbell <contact@crossbell.io>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Crossbell-Box/docs/issues"
+	},
+	"homepage": "https://github.com/Crossbell-Box/docs#readme",
+	"dependencies": {
+		"framer-motion": "^10.3.1",
+		"next": "^13.2.4",
+		"nextra": "^2.2.19",
+		"nextra-theme-docs": "^2.2.19",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	},
+	"devDependencies": {
+		"@types/node": "18.11.10",
+		"autoprefixer": "^10.4.14",
+		"prettier": "^2.8.4",
+		"tailwindcss": "^3.2.7",
+		"typescript": "^4.9.5"
+	}
+}

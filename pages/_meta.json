@@ -1,0 +1,24 @@
+{
+	"index": {
+		"type": "page",
+		"title": "Crossbell",
+		"display": "hidden",
+		"theme": {
+			"layout": "raw"
+		}
+	},
+	"docs": {
+		"type": "page",
+		"title": "Documentation"
+	},
+	"about": {
+		"title": "About",
+		"type": "page"
+	},
+	"contact": {
+		"title": "Twitter ↗",
+		"type": "page",
+		"href": "https://twitter.com/_Crossbell",
+		"newWindow": true
+	}
+}

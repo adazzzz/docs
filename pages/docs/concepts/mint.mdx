@@ -2,6 +2,14 @@
 title: Mint
 ---
 
-# Mint
+# Mint (Captialization)
 
-// TODO
+As we have mentioned, character and linklist are natively NFTs, and a piece of note can be mint as an NFT.
+
+All character NFTs are generated from the same contract. The token URI of a character NFT is the same as the URI of the character metadata. When a character NFT is transferred, it is just decoupled with the previous owner, the existing notes, existing followers of that character, and the link modules previously set have no reason to be affected. And the new owner of that character could continue to post notes under it or reset the link modules if he wants. So typically, exchanging characters is to sell the branding of that character along with its traffic.
+
+Similarly, all linklist NFTs are generated from the same contract. The token URI of a linklist NFT can be set by that NFT owner. A linklist NFT is bound to the character it is attached. It can only be transferred along with its attaching character. The new owner of that NFT could continue to modify the objects in that list.
+
+The Mint note mechanism is that, if a note is never minted, a new contract will be created first before a new token is minted, otherwise a new token can be minted on that contract straightforwardly. The token URI of the note NFT is the content URI of the original note.
+
+As we have mentioned before, a note can be deleted. But that’s only a flag variable in the contract, which will not affect the content URI of the original note. So it means deleting a note is not a problem for the minted note NFT.

@@ -1,0 +1,34 @@
+---
+title: Takeaways
+---
+
+# Takeaways
+
+## Character and Note
+
+- Each character is created by an Ethereum address, aka, the creator, and can be mint to any Ethereum address.
+- Each note is only able to be posted under a character that the note creator owns.
+- Each character contains multiple notes.
+- Each Ethereum address can own multiple characters.
+- Each Ethereum address can set a primary character for itself.
+
+## Link
+
+- All Crossbell instances(Ethereum address, character, note, general asset, single link item, link list) have an instance URI.
+- Link can be emitted from either character or note. Link can point to any instance on Crossbell or any external URI. Each link has a link type.
+- Character owner and note owner can set a link module for his character and each of his notes. The link module will be triggered during each link action.
+- All linking objects with the **same link type** and emitted from a **character** make up a link list.
+- All linking objects with the **same link type** and emitted from a **note** don’t make up a link list.
+- Each Ethereum address can own multiple linklists.
+
+## Capitalization
+
+- Each character is natively an NFT. Each note is natively not.
+- Each link list is natively an NFT. Every single link is not.
+- Linklist NFT is bound to the character NFT.
+- The character owner is the owner of that character NFT. It suggests that the character owner isn’t necessary to be the character creator since character NFT can be transferred.
+- Note owner is the owner of the character to which belongs. It suggests that the note owner isn’t necessary to be the note creator since character NFT can be transferred.
+- Mint can be acted on a note.
+- Mint can be acted from any Ethereum address to some selected Ethereum address.
+- Note owner can set a mint module, which will be triggered during each mint action.
+- Error emitting from the link module will be omitted. Error emitting from the mint module will be reverted.

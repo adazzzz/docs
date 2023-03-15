@@ -1,62 +1,62 @@
 a.cta {
-  display: inline-block;
-  background: linear-gradient(to bottom, #ffcf23, #ffbf00);
-  text-decoration: none;
-  border-radius: 9999px;
-  color: black;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  margin-top: 0.5rem;
-  text-shadow: 0 1px 1px #00387838;
-  box-shadow: 0 1px 2px #00295738;
-  transition: all 0.2s ease;
-  -webkit-user-drag: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+	display: inline-block;
+	background: linear-gradient(to bottom, #ffcf23, #ffbf00);
+	text-decoration: none;
+	border-radius: 9999px;
+	color: black;
+	font-weight: bold;
+	padding: 0.75rem 1.5rem;
+	margin-top: 0.5rem;
+	text-shadow: 0 1px 1px #00387838;
+	box-shadow: 0 1px 2px #00295738;
+	transition: all 0.2s ease;
+	-webkit-user-drag: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
 }
 a.cta span {
-  display: inline-block;
-  transition: all 0.2s ease;
+	display: inline-block;
+	transition: all 0.2s ease;
 }
 a.cta:hover span {
-  transform: translateX(3px);
+	transform: translateX(3px);
 }
 a.cta:hover {
-  box-shadow: 0 5px 30px -10px #fbff00ab;
-  filter: brightness(1.05);
+	box-shadow: 0 5px 30px -10px #fbff00ab;
+	filter: brightness(1.05);
 }
 a.cta:active {
-  box-shadow: 0 1px 3px #00295738;
-  filter: brightness(0.95);
+	box-shadow: 0 1px 3px #00295738;
+	filter: brightness(0.95);
 }
 a.cta:active span {
-  transform: translateX(5px);
+	transform: translateX(5px);
 }
 a.cta:focus-visible {
-  outline: 2px solid hsl(var(--nextra-primary-hue) 100% 77%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(var(--nextra-primary-hue) 100% 77%);
+	outline-offset: 2px;
 }
 a.cta:focus-visible span {
-  transform: translateX(3px);
+	transform: translateX(3px);
 }
 
 .logotext {
-  background: linear-gradient(to right, #b18d0a, #e6ba38);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: bold;
-  transition: background 0.5s ease;
-  mask-image: linear-gradient(
-    60deg,
-    black 25%,
-    rgba(0, 0, 0, 0.2) 50%,
-    black 75%
-  );
-  mask-size: 400%;
-  mask-position: 0%;
+	background: linear-gradient(to right, #b18d0a, #e6ba38);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: bold;
+	transition: background 0.5s ease;
+	mask-image: linear-gradient(
+		60deg,
+		black 25%,
+		rgba(0, 0, 0, 0.2) 50%,
+		black 75%
+	);
+	mask-size: 400%;
+	mask-position: 0%;
 }
 .logotext:hover {
-  mask-position: 100%;
-  transition: mask-position 1s ease, -webkit-mask-position 1s ease;
+	mask-position: 100%;
+	transition: mask-position 1s ease, -webkit-mask-position 1s ease;
 }

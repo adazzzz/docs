@@ -1,7 +1,7 @@
 {
-  "-- JS": {
-    "type": "separator",
-    "title": "JavaScript Core"
-  },
-  "js": "crossbell.js"
+	"-- JS": {
+		"type": "separator",
+		"title": "JavaScript Core"
+	},
+	"js": "crossbell.js"
 }

@@ -1,10 +1,10 @@
 {
-  "index": "",
-  "concepts": "Concepts",
-  "contracts": {
-    "title": "Contract ↗",
-    "href": "https://crossbell-box.github.io/Crossbell-Contracts/",
-    "newWindow": true
-  },
-  "specs": "Specifications"
+	"index": "",
+	"concepts": "Concepts",
+	"contracts": {
+		"title": "Contract ↗",
+		"href": "https://crossbell-box.github.io/Crossbell-Contracts/",
+		"newWindow": true
+	},
+	"specs": "Specifications"
 }

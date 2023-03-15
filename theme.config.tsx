@@ -1,5 +1,6 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import { useRouter } from 'next/router'
 
 export const logo = (
   <span>
@@ -72,7 +73,17 @@ const config: DocsThemeConfig = {
     link: 'https://discord.gg/4GCwDsruyj'
   },
   logo,
-  docsRepositoryBase: 'https://github.com/Crossbell-Box/docs',
+  primaryHue: 70,
+  faviconGlyph: '🔔',
+  docsRepositoryBase: 'https://github.com/Crossbell-Box/docs/tree/main',
+  useNextSeoProps() {
+    const { asPath } = useRouter()
+    if (asPath !== '/') {
+      return {
+        titleTemplate: '%s – Crossbell'
+      }
+    }
+  },
   sidebar: {
     titleComponent({ title, type }) {
       if (type === 'separator') {

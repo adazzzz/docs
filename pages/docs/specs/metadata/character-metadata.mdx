@@ -1,0 +1,120 @@
+---
+title: Character Metadata
+---
+
+# Character Metadata
+
+Character metadata is a way to store information about a character.
+
+This information is stored in a separate file. It is usually stored in IPFS, but it can be stored in an alternative way so long as the client can access it.
+
+## Character Metadata File
+
+The character metadata file is a JSON file. Here is an example:
+
+```json
+{
+  "name": "Character Name",
+  "avatars": ["https://example.com/avatar.png"],
+  "bio": "Character Bio",
+  "websites": ["https://example.com"],
+  "banners": [
+    {
+      "address": "https://example.com/banner.png",
+      "mime_type": "image/png"
+    }
+  ],
+  "connected_accounts": ["csb://account:someone@twitter"],
+  "connected_avatars": ["csb://asset:0x5452c7fb99d99fab3cc1875e9da9829cb50f7a13-753@ethereum"],
+  "attributes": [
+    {
+      "value": "Trait Value",
+      "trait_type": "Trait Type",
+      "display_type": "string",
+    }
+  ]
+}
+```
+
+## Character Metadata Schema
+
+The character metadata schema is defined as follows:
+
+```ts
+class CharacterMetadata {
+  /** The name of this character. */
+  name?: string
+
+  /**
+   * The avatars of this character.
+   * The first avatar is the primary avatar.
+   *
+   * @example
+   * ['ipfs://Qm...', 'ipfs://Qm...']
+   */
+  avatars?: string[]
+
+  /** The bio of this character. */
+  bio?: string
+
+  /**
+   * The websites of this character.
+   *
+   * @example
+   * ['https://example.com', 'https://example.org']
+   */
+  websites?: string[]
+
+  /**
+   * The banners of this character.
+   *
+   * @example
+   * [{ address: 'ipfs://Qm...', mime_type: 'image/png' }]
+   */
+  banners?: {
+    /**
+     * The address (url) of this banner.
+     */
+    address: string
+
+    /**
+     * The mime type of this banner file.
+     */
+    mime_type: string
+  }[]
+
+  /**
+   * The social links of this character. It should follow the csb:// scheme.
+   *
+   * The format is `csb://account:<identity>@<platform>`.
+   *
+   * @example
+   * ['csb://account:someone@twitter', 'csb://account:someone@github']
+   */
+  connected_accounts?: string[]
+
+  /**
+   * The special connected avatars of this character. it should follow the csb:// scheme.
+   *
+   * Use case: use an NFT as avatar.
+   *
+   * The format is `csb://asset:<contract_address>-<token_id>@<network>`.
+   *
+   * @example
+   * ['csb://asset:0x5452c7fb99d99fab3cc1875e9da9829cb50f7a13-753@ethereum']
+   */
+  connected_avatars?: string[]
+
+  /**
+   * Custom attributes.
+   *
+   * @example
+   * [{ value: "post", trait_type: "type" }, { value: "https://example.com", trait_type: "URL" }, { value: 1546360800, trait_type: 'Birthday', "display_type": "date" }]
+   */
+  attributes?: {
+    value: string | number | boolean | null
+    trait_type?: string
+    display_type?: 'string' | 'number' | 'date' | 'boolean'
+  }[]
+}
+```

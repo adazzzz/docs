@@ -11,9 +11,13 @@
     "type": "page",
     "title": "Docs"
   },
+  "sdk": {
+    "type": "page",
+    "title": "SDK"
+  },
   "about": {
-    "title": "About",
-    "type": "page"
+    "type": "page",
+    "title": "About"
   },
   "contact": {
     "title": "Twitter ↗",

@@ -155,12 +155,12 @@ contract.postNote(
     mintModule: {
       address: "0x8d040b35cEad83782c62845BEbE026504B73b509",
       data: [
-        ['0x1234567890123456789012345678901234567890'],
-        100,
+        ['0x1234567890123456789012345678901234567890', '0xabc123def456abc123def456abc123def456abc1'],
+        1,
       ]
     },
   }
 );
 ```
 
-The above code will attach a `ApproveMintModule` to the achievement note, which means that only the address `0x1234567890123456789012345678901234567890` can mint the achievement note, and there is a limit of 100 minting.
+The above code will attach a `ApproveMintModule` to the achievement note, which means that only these two addresses can mint the achievement note, and each address can mint it only once (`1`).

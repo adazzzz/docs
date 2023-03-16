@@ -67,20 +67,20 @@ export const logo = (
 
 const config: DocsThemeConfig = {
 	project: {
-		link: 'https://github.com/Crossbell-Box'
+		link: 'https://github.com/Crossbell-Box',
 	},
 	chat: {
-		link: 'https://discord.gg/4GCwDsruyj'
+		link: 'https://discord.gg/4GCwDsruyj',
 	},
 	logo,
-	primaryHue: 70,
+	primaryHue: 50,
 	faviconGlyph: '🔔',
 	docsRepositoryBase: 'https://github.com/Crossbell-Box/docs/tree/main',
 	useNextSeoProps() {
 		const { asPath } = useRouter()
 		if (asPath !== '/') {
 			return {
-				titleTemplate: '%s – Crossbell'
+				titleTemplate: '%s – Crossbell',
 			}
 		}
 	},
@@ -92,11 +92,11 @@ const config: DocsThemeConfig = {
 			return <>{title}</>
 		},
 		defaultMenuCollapseLevel: 1,
-		toggleButton: true
+		toggleButton: true,
 	},
 	footer: {
-		text: 'Crossbell'
-	}
+		text: 'Crossbell',
+	},
 }
 
 export default config

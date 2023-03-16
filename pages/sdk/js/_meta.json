@@ -1,5 +1,6 @@
 {
 	"index": "",
 	"guides": "Guides",
-	"contract": "Contract API"
+	"contract": "Contract API",
+	"indexer": "Indexer API"
 }

@@ -19,6 +19,8 @@ contract.postNote(
 );
 ```
 
+Please refer to [`postNote`](/sdk/js/contract/note/create-note#postnote) for more details.
+
 ### Note Metadata
 
 The `https://example.com/note.json` above is the URL of the note metadata. The note is a JSON file with the following structure:
@@ -57,3 +59,108 @@ import { Callout } from 'nextra-theme-docs'
 </Callout>
 
 // TODO @songkeys
+
+Please refer to the [`linkModule` options API](/sdk/js/contract/note/create-note#optionslinkmodule-optional) and [`mintModule` options API](/sdk/js/contract/note/create-note#optionsmintmodule-optional) for more details.
+
+### Link a Note
+
+// TODO @songkeys
+
+### Mint a Note
+
+After creating a note, everyone (wallets) can mint it.
+
+For example, to mint a note with characterId `42` and noteId `5` to the address `0x1234567890123456789012345678901234567890`:
+
+```ts
+const { data } = await contract.mintNote(
+  42, // characterId
+  5, // noteId
+  '0x1234567890123456789012345678901234567890', // toAddress
+)
+```
+
+Now, the address `0x1234567890123456789012345678901234567890` owns the note NFT with contract address `0xabc123def456abc123def456abc123def456abc1` and token ID `6` (meaning that the note NFT is stored at the contract of address `0xabc123def456abc123def456abc123def456abc1`, and the minter is the 6th to mint).
+
+This minted note NFT is of ERC721 type. It can be transferred to another address, or burned.
+
+<Callout>
+  It deserves to be noted that minting might fail if the note is attached with a mint module that limits who can mint it. The app should handle this case.
+</Callout>
+
+Please refer to [`mintNote`](/sdk/js/contract/note/mint-note#mintnote) for more details.
+
+## Topics
+
+### Note Variant: "Achievement"
+
+#### Publish an Achievement Note
+
+A character can post a note as an achievement for others to mint.
+
+This is done by setting the `"variant"` field in the [note metadata](/docs/specs/metadata/note-metadata) to `"achievement"`. For example:
+
+```json {2}
+{
+  "variant": "achievement",
+  "title": "Sponsor NFT",
+  "content": "This is a sponsor NFT for my fans.",
+  "attachements": [
+    {
+      "mint_type": "image/png",
+      "address": "ipfs://example/sponsor_nft.png"
+    }
+  ],
+  "attributes": [
+    {
+      "trait_type": "Tier",
+      "value": "Gold",
+      "display_type": "string"
+    }
+  ]
+}
+```
+
+```ts
+contract.postNote(
+  42, // character ID
+  "https://example.com/my-sponsor-nft.json", // note metadata URL
+);
+```
+
+This note is not technically special; it just has a `"variant"` field to indicate that it is an achievement NFT, and should be **displayed** as such in Apps.
+
+#### Query Achievement Notes
+
+You can query the note from the indexer with the `variant` field to get the list of achievement notes:
+
+```ts
+const { list } = await indexer.getNotes({
+  characterId: 42,
+  variant: "achievement",
+});
+```
+
+#### Attach Mint Module
+
+Just as other notes, an achievement note can be attached with a mint module.
+
+One useful example is to limit the group of people who can mint the achievement note. In this case, `ApproveMintModule` can be used.
+
+```ts
+contract.postNote(
+  42, // character ID
+  "https://example.com/my-sponsor-nft.json", // note metadata URL
+  {
+    mintModule: {
+      address: "0x8d040b35cEad83782c62845BEbE026504B73b509",
+      data: [
+        ['0x1234567890123456789012345678901234567890'],
+        100,
+      ]
+    },
+  }
+);
+```
+
+The above code will attach a `ApproveMintModule` to the achievement note, which means that only the address `0x1234567890123456789012345678901234567890` can mint the achievement note, and there is a limit of 100 minting.

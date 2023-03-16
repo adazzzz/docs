@@ -15,7 +15,7 @@ You can learn more about characters in the [Concept - Character](/docs/concepts/
 This creates a new character for an address and returns the ID of the newly created character. When it is the first character created for an address, the address is automatically set as the primary character.
 
 ```ts
-createCharacter(owner: string, handle: string, metadataOrUri: string | CharacterMetadata, overrides?: Overrides): Promise<Result<number, true>>
+createCharacter(owner: string, handle: string, metadataOrUri: string | CharacterMetadata, options?: PostNoteOptions, overrides?: Overrides): Promise<Result<number, true>>
 ```
 
 ### Usage
@@ -63,6 +63,38 @@ It follows this regular expression: `^[a-z0-9\-\_]{3,32}$`, which means it can o
 The metadata of the character. It can be either an URL string or a [CharacterMetadata](https://crossbell-box.github.io/crossbell.js/classes/CharacterMetadata.html) object.
 
 See more about character metadata in the [Spec - Character Metadata](/docs/specs/metadata/character-metadata) section.
+
+#### `options` (optional)
+
+##### `options.linkModule`
+
+This sets the link module for the character.
+
+###### `options.linkModule.address`
+
+- Type: string
+
+The contract address of the link module.
+
+###### `options.linkModule.data`
+
+- Type: string
+
+The data to be passed to the link module.
+
+```ts {6-9}
+contract.createCharacter(
+  '0x1234567890123456789012345678901234567890',
+  'Jason',
+  'ipfs://xxxx/metadata.json',
+  {
+    linkModule: {
+      address: '0x1234567890123456789012345678901234567890',
+      data: ['0x1234567890123456789012345678901234567890', 10],
+    },
+  },
+)
+```
 
 ### Returns
 

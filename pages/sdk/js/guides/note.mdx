@@ -1,0 +1,59 @@
+---
+title: Note
+---
+
+# Note
+
+A character can create notes.
+
+A note is typically an article published on the blockchain.
+
+## Create a Note
+
+Assume that we have a character named `Alice` with character ID `42`. Alice wants create a note as a blog post:
+
+```ts
+contract.postNote(
+  42, // character ID
+  "https://example.com/note.json", // note metadata URL
+);
+```
+
+### Note Metadata
+
+The `https://example.com/note.json` above is the URL of the note metadata. The note is a JSON file with the following structure:
+
+```json
+{
+  "title": "Hello World",
+  "content": "This is a note."
+}
+```
+
+It can be hosted on any web server. It can be `ipfs://` URL. For example, here is another more complex note metadata: [`ipfs://bafkreidhjuuo2vibtevn66v2q6bjq652sfox6csocg6v2adwhywifcnzcy`](https://ipfs.4everland.xyz/ipfs/bafkreidhjuuo2vibtevn66v2q6bjq652sfox6csocg6v2adwhywifcnzcy).
+
+You can create a note with metadata content object directly:
+
+```ts
+contract.postNote(
+  42, // character ID
+  {
+    title: "Hello World",
+    content: "This is a note."
+  }
+);
+```
+
+In this case, the SDK will automatically upload the metadata to IPFS and create a `ipfs://` URL for you.
+
+Please refer to [Note Metadata](/docs/specs/metadata/note-metadata) for more details.
+
+### Note Link/Mint Module
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout>
+  Before attaching a link or a module to a note, please refer to the [Concepts - Mint/Link Module](/docs/concepts/link-mint-module) section to learn more about what a module is.
+</Callout>
+
+// TODO @songkeys

@@ -1,5 +1,7 @@
 {
 	"index": "",
 	"character": "Character",
-	"note": "Note"
+	"note": "Note",
+	"link": "Link",
+	"link-mint-module": "Link/Mint Module"
 }

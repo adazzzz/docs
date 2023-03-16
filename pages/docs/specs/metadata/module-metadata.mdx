@@ -1,0 +1,71 @@
+---
+title: Link/Mint Module Metadata
+---
+
+# Link/Mint Module Metadata
+
+A Link/Mint Module is an attachable module for characters and notes that is triggered when a user attempts to link or mint.
+
+## Example
+
+For instance, the `ApproveMintModule` is used to limit minting to a select group of addresses. A user can set this module to a note, and when other users try to mint the note, the `ApproveMintModule` will be activated to verify if the minting is permissible.
+
+The metadata of the module is:
+
+```json
+{
+  "id": "ApprovalMintModule",
+  "type": "mint",
+  "address": "0x8d040b35cEad83782c62845BEbE026504B73b509",
+  "name": "ApprovalMintModule",
+  "description": "Only allow a restricted group of addresses to mint the note, with limited number of mints",
+  "icon": "https://example.com/icon.png",
+  "authorCharacterId": 10,
+  "initDataStructure": [
+    {
+      "label": "Allowed Addresses",
+      "description": "The whitelisted group of addresses to mint this note",
+      "type": "address[]"
+    },
+    {
+      "label": "Approved Amount",
+      "description": "The number of nfts available to mint",
+      "type": "uint256"
+    }
+  ]
+}
+```
+
+## Schema Definition
+
+```ts
+export interface MintOrLinkModule {
+  /* Global unique id */
+  id: string
+  /* Type of the module */
+  type: 'mint' | 'link'
+  /* The contract address of this module */
+  address: string
+  /* Display name */
+  name: string
+  /* Display Description */
+  description: string
+  /* Module icon, an image url, in 256*256px */
+  icon?: string
+  /* The character id of the author */
+  authorCharacterId?: number
+  /* Data structure of init data, a form to fill out in frontend */
+  initDataStructure: {
+    /* Label of this field */
+    label: string
+    /* Data type of this field. E.g. "address[]", "uint256", ... see https://docs.soliditylang.org/en/latest/abi-spec.html#types */
+    type: string
+    /* Description of this field */
+    description: string
+    /* Whether or not required, default: true */
+    required?: boolean
+  }[]
+  /* Published date string */
+  createdAt?: string
+}
+```

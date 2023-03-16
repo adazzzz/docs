@@ -1,0 +1,121 @@
+---
+title: Character
+---
+
+# Character
+
+A character is a distinct identity that enables interaction with the blockchain. In other words, it is the account that represents a user on the blockchain.
+
+One user has one single crypto wallet. Each wallet (also referred to as an address) can contain multiple characters. Every character is associated with a single wallet.
+
+You can learn more about characters in the [Concept - Character](/docs/concepts/character) section.
+
+## Prepare the Contract and Indexer
+
+Our futher steps will be using the `Contract` and `Indexer`. Please refer to the [Contract](/sdk/js/contract) and [Indexer](/sdk/js/indexer) section to learn how to create them.
+
+## Check if You Have a Character
+
+You can check if you have a character by checking from the indexer:
+
+```ts
+const result = await indexer.getCharacters(address)
+console.log(result.list) // character list
+```
+
+Because a wallet can have multiple characters, the result is a list of characters. If you don't have a character yet, the list will be empty.
+
+## Create a Character
+
+If you don't have a character yet, or you want to create a new one, you can use the [`contract.createCharacter`](/sdk/js/contract/character/create-character#createcharacter) method:
+
+```ts
+const result = await contract.createCharacter(
+  address, // wallet address
+  'best-character-ever', // handle
+  "https://example.com/character-metadata.json", // character metadata
+)
+console.log(result.data) // character id
+```
+
+The [`handle`](/sdk/js/contract/character/create-character#handle) must be unique when creating a character. This is a unique identifier that will be displayed as `@best-character-ever` in the user interface. If a character with an existing handle is attempted to be created on the Crossbell blockchain, the transaction will be unsuccessful.
+
+### Check if a Handle is Available
+
+To ensure that the handle is available before creating a character, you can query from the indexer:
+
+```ts
+const result = await indexer.getCharactersByHandle('best-character-ever')
+console.log(result.data) // a character or null
+```
+
+If the result is `null`, the handle is available.
+
+### Character Metadata
+
+The character metadata is a JSON object that contains the character's information.
+
+In the example above, `"https://example.com/character-metadata.json"` is the URL of the character metadata. The character metadata can also be a JSON object:
+
+```json
+{
+  "name": "John Doe",
+  "bio": "I am the best character ever"
+}
+```
+
+You can add more metadata fields like `avatars`:
+
+```json {4}
+{
+  "name": "John Doe",
+  "bio": "I am the best character ever",
+  "avatars": ["https://example.com/avatar.png"]
+}
+```
+
+It can be hosted on any web server. It can be `ipfs://` URL. For example, here is another more complex note metadata: [`ipfs://bafkreibu6cxouafklrbf5vvwnqdv2jtszru45gqdyswesyqlcdiffyy5la`](https://ipfs.4everland.xyz/ipfs/bafkreibu6cxouafklrbf5vvwnqdv2jtszru45gqdyswesyqlcdiffyy5la).
+
+You can create a character with metadata content object directly:
+
+```ts
+const result = await contract.createCharacter(
+  address, // wallet address
+  'best-character-ever', // handle
+  {
+    name: 'John Doe',
+    bio: 'I am the best character ever',
+  }, // character metadata
+)
+console.log(result.data) // character id
+```
+
+In this case, the SDK will automatically upload the metadata to IPFS and create a character with the `ipfs://` URL.
+
+Please refer to the [Character Metadata](/docs/specs/metadata/character-metadata) section to learn more about the character metadata.
+
+### Character Link Module
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout>
+  Before attaching a link module to a character, please refer to the [Concepts - Mint/Link Module](/docs/concepts/link-mint-module) section to learn more about what a link module is.
+</Callout>
+
+// TODO @songkeys
+
+Note that you won't be able to change the link module after the character is created.
+
+Please refer to the [`linkModule` options API](/sdk/js/contract/character/create-character#optionslinkmodule) for more details.
+
+## Update a Character
+
+You can update a character using a variety of methods. For example:
+
+- [Update handle](/sdk/js/contract/character/update-handle)
+- [Update metadata](/sdk/js/contract/character/update-metadata)
+- [Switch primary character](/sdk/js/contract/character/switch-primary-character)
+
+## Delete a Character
+
+- [Burn character](/sdk/js/contract/character/burn-character)

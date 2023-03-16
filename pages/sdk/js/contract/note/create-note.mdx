@@ -79,6 +79,64 @@ contract.postNote(
 );
 ```
 
+##### `options.linkModule` (optional)
+
+This sets the link module for the note.
+
+###### `options.linkModule.address`
+
+- Type: string
+
+The contract address of the link module.
+
+###### `options.linkModule.data`
+
+- Type: string
+
+The data to be passed to the link module.
+
+```ts {5-8}
+contract.postNote(
+  42,
+  "https://example.com/note.json",
+  {
+    linkModule: {
+      address: "0x1234567890123456789012345678901234567890",
+      data: ["0x1234567890123456789012345678901234567890", 10]
+    },
+  },
+);
+```
+
+##### `options.mintModule` (optional)
+
+This sets the mint module for the note.
+
+###### `options.mintModule.address`
+
+- Type: string
+
+The contract address of the mint module.
+
+###### `options.mintModule.data`
+
+- Type: string
+
+The data to be passed to the mint module.
+
+```ts {5-8}
+contract.postNote(
+  42,
+  "https://example.com/note.json",
+  {
+    mintModule: {
+      address: "0x1234567890123456789012345678901234567890",
+      data: ["0x1234567890123456789012345678901234567890", 10]
+    },
+  },
+);
+```
+
 ### Returns
 
 ```ts

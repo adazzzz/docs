@@ -8,7 +8,7 @@ All social activities can be characterized as interactions between different ent
 
 # Entities
 
-Crossbell is EVM-compatible, so two types of entities are inherited directly: crypto addresses and assets (NFTs/cryptocurrencies/etc.). However, in order to create a more comprehensive image for social activities, two additional entities are introduced in the Crossbell world: characters and notes. Characters are created and owned by a crypto address, and the character owner can post any notes under one of her characters.
+Crossbell is EVM-compatible, so two types of entities are inherited directly: crypto addresses and assets (NFTs/cryptocurrencies/etc.). However, in order to create a more comprehensive image for social activities, two additional entities are introduced in the Crossbell world: characters and notes. Characters are created and owned by a crypto address, and the character owner can post any notes under one of their characters.
 
 # Interaction
 
@@ -46,7 +46,7 @@ In addition to the two native assets on Crossbell, there is a manual approach ca
 
 # Modularity
 
-The protocol is composed of instances, links, and mints, which help to sketch the basics of social activities. For further flexibility and composability, two types of modules can be configured on the action object: link modules and mint modules. Each module is a standalone contract that adheres to a specific interface. The undetermined states within the contract hold unlimited potential. When an instance is linked, the corresponding link module is triggered; when a note is minted, the corresponding mint module is triggered. For example, a character can set a link module for itself so that the first 1000 followers get a special NFT; a character owner can set a mint module for any of her notes, requiring the minter to pay a specific amount of tokens.
+The protocol is composed of instances, links, and mints, which help to sketch the basics of social activities. For further flexibility and composability, two types of modules can be configured on the action object: link modules and mint modules. Each module is a standalone contract that adheres to a specific interface. The undetermined states within the contract hold unlimited potential. When an instance is linked, the corresponding link module is triggered; when a note is minted, the corresponding mint module is triggered. For example, a character can set a link module for itself so that the first 1000 followers get a special NFT; a character owner can set a mint module for any of their notes, requiring the minter to pay a specific amount of tokens.
 
 Link modules cannot revert link interactions, as links are essentially used to deliver information within the context of social activities. Mint modules, on the other hand, can revert mint interactions, as minting generates new assets and involves property rights or copyright.
 

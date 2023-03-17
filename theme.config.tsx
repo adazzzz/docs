@@ -1,5 +1,5 @@
 import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
 
 export const logo = (
@@ -78,9 +78,22 @@ const config: DocsThemeConfig = {
 	docsRepositoryBase: 'https://github.com/Crossbell-Box/docs/tree/main',
 	useNextSeoProps() {
 		const { asPath } = useRouter()
+		const { frontMatter } = useConfig()
 		if (asPath !== '/') {
 			return {
 				titleTemplate: '%s – Crossbell',
+				twitter: {
+					cardType: 'summary_large_image',
+					site: 'https://docs.crossbell.io',
+				},
+				openGraph: {
+					images: [
+						{ url: frontMatter.image || 'https://nextra.vercel.app/og.png' },
+					],
+				},
+				additionalMetaTags: [
+					{ name: 'apple-mobile-web-app-title', content: 'Crossbell' },
+				],
 			}
 		}
 	},
@@ -93,6 +106,26 @@ const config: DocsThemeConfig = {
 		},
 		defaultMenuCollapseLevel: 1,
 		toggleButton: true,
+	},
+	head: () => {
+		const { asPath, defaultLocale, locale } = useRouter()
+		const { frontMatter } = useConfig()
+		// const url =
+		// 	'https://docs.crossbell.io' +
+		// 	(defaultLocale === locale ? asPath : `/${locale}${asPath}`)
+
+		const url = 'https://docs.crossbell.io' + asPath
+
+		return (
+			<>
+				<meta property="og:url" content={url} />
+				<meta property="og:title" content={frontMatter.title || 'Crossbell'} />
+				<meta
+					property="og:description"
+					content={frontMatter.description || 'Crossbell Documentation'}
+				/>
+			</>
+		)
 	},
 	footer: {
 		text: 'Crossbell',

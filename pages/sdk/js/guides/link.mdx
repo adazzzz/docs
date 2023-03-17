@@ -1,0 +1,195 @@
+---
+title: Link
+---
+
+# Link
+
+A "link" is a component that links two things on Crossbell together. It can be a link between two characters, a character or a note, etc.
+
+All links start from a "source" and end at a "target". You can consider it as an arrow that points from the source to the target.
+
+The source of a link must be a character; the target can be a character, a note, an address, an ERC721 token, a linklist, or any URI.
+
+![graph demonstarte link](https://mermaid.ink/svg/pako:eNplkLsKg0AQRX9lmVqLpAlYBHwlTUiRR7VrMbiTuKirjGsh4r9HQwKC3eWeU1zuCHmjCQJ4M7aFeETKChHKuEDG3BFnwvcvxpa-fxTRqv5qKxbLa-NoUycy1Jqp6zYklektPux3G3CSS6pM5zboLEM7PNlk4EFNXKPR8_Jx0RS4gmpSEMxRI5cKlJ1mr281Okq1cQ1D8MKqIw-wd819sDkEjnv6S4nB-YX6Z00fJ0dZew)
+
+Every link has a "linkType" which is a string that describes the type of the link. For example, "follow", "like", "favorite", etc. It allows us to describe the relationship between two components.
+
+## Create a Link
+
+To create a link, you need to call the `link*` function of the contract. Here are all the link functions:
+
+- [`linkCharacter`](/sdk/js/contract/link/create-link#linkcharacter)
+- [`linkNote`](/sdk/js/contract/link/create-link#linknote)
+- [`linkAddress`](/sdk/js/contract/link/create-link#linkaddress)
+- [`linkErc721`](/sdk/js/contract/link/create-link#linkerc721)
+- [`linkLinklist`](/sdk/js/contract/link/create-link#linklinklist)
+- [`linkAnyUri`](/sdk/js/contract/link/create-link#linkanyuri)
+
+For example, to create a link between two characters, you can call the `linkCharacter` function:
+
+```js {2}
+// character ID 42 follows character ID 43
+const { data } = await contract.linkCharacter(42, 43, 'follow')
+console.log(data) // linklist ID
+```
+
+The `linkCharacter` function takes three parameters:
+
+- `characterId`: the ID of the source character
+- `targetCharacterId`: the ID of the target character
+- `linkType`: the type of the link, e.g. "follow"
+
+The function returns the ID of the linklist that contains the link.
+
+Please refer to the contract API doc for more details about each link function.
+
+### Link Type
+
+In the above example, we use the string "follow" as the link type. The link type is a string that describes the relationship between the source and the target. It can be any string you want as long as your application can understand it.
+
+Here is a list of link types that are commonly used by the Crossbell ecosystem:
+
+- `follow`: the source follows the target
+- `like`: the source likes the target
+
+### Linklist
+
+A linklist is an NFT created by the contract when you create a link of a unique type. For example:
+
+1. If character `42` `"follow"`s character `43`, the contract will create a linklist NFT and mint it to character `42`. The linklist NFT contains all the links of the same type `"follow"` that character `42` has created.
+2. Then if character `42` `"follow"`s another character `44`, the linklist NFT will be updated to include the new link.
+3. Then if character `42` `"like"`s character `43`, the contract will create *another* linklist NFT and mint it to character `42`.
+
+The linklist NFT is a Character Bound Token, which means it is bound to a character. It cannot be transferred to another character.
+
+## Remove a Link
+
+To remove a link, you need to call the `unlink*` function of the contract. Here are all the unlink functions:
+
+- [`unlinkCharacter`](/sdk/js/contract/link/remove-link#unlinkcharacter)
+- [`unlinkNote`](/sdk/js/contract/link/remove-link#unlinknote)
+- [`unlinkAddress`](/sdk/js/contract/link/remove-link#unlinkaddress)
+- [`unlinkErc721`](/sdk/js/contract/link/remove-link#unlinkerc721)
+- [`unlinkLinklist`](/sdk/js/contract/link/remove-link#unlinklinklist)
+- [`unlinkAnyUri`](/sdk/js/contract/link/remove-link#unlinkanyuri)
+
+For example, to remove a link between two characters, you can call the `unlinkCharacter` function:
+
+```ts {2}
+// character ID 42 unfollows character ID 43
+await contract.unlinkCharacter(42, 43, 'follow')
+```
+
+The `unlinkCharacter` function takes three parameters:
+
+- `characterId`: the ID of the source character
+- `targetCharacterId`: the ID of the target character
+- `linkType`: the type of the link, e.g. "follow"
+
+Please refer to the contract API doc for more details about each unlink function.
+
+## Topics
+
+### Follow and Unfollow a Character
+
+As mentioned above, the link type "follow" is commonly used to describe the relationship between two characters.
+
+#### Follow and Unfollow
+
+For example, if character `42` follows character `43`:
+
+```ts {2}
+// character ID 42 follows character ID 43
+const { data } = await contract.linkCharacter(42, 43, 'follow')
+console.log(data) // linklist ID
+```
+
+Then if character `42` unfollows character `43`:
+
+```ts {2}
+// character ID 42 unfollows character ID 43
+await contract.unlinkCharacter(42, 43, 'follow')
+```
+
+#### Get All Followings and Followers
+
+How can we know all the following of character `42`? We can use the indexer API to query all the "follow" links of character `42`:
+
+```ts
+const result = await indexer.getLinks(42, {
+  linkType: 'follow',
+  linkItemType: 'Character',
+})
+console.log(result.list) // all the "follow" links of character 42
+```
+
+The indexer API returns a list of links. Each link has a `toCharacter` field that contains the ID of the target character.
+
+How can we know all the followers of character `43`? We can use the indexer API to query all the "follow" backlinks of character `43`:
+
+```ts
+const result = await indexer.getBacklinksOfCharacter(43, {
+  linkType: 'follow',
+})
+console.log(result.list) // all the "follow" links that have character 43 as the target
+```
+
+The indexer API returns a list of links. Each link has a `fromCharacter` field that contains the ID of the source character.
+
+#### Get the Following Relationship of Two Characters
+
+How can we know if character `42` follows character `43`? We can use the indexer API to query all the "follow" links of character `42` that have character `43` as the target to be as a filter:
+
+```ts
+const result = await indexer.getLinks(42, {
+  toCharacterId: 43,
+  linkType: 'follow',
+  linkItemType: 'Character',
+})
+console.log(result.list) // the list may contain 0 or 1 link
+```
+
+If the list contains 1 link (which describe that character `42` follows `43`), then we know that character `42` follows character `43`. Otherwise, character `42` does not follow character `43`.
+
+#### Derived Case: Like and Unlike a Note
+
+We can use the same approach to implement the "like" relationship between a character and a note.
+
+For example:
+
+```ts {2,6}
+// character ID 42 likes note ID 43-5 (the 5th note of character 43)
+const { data } = await contract.linkNote(42, 43, 5, 'like')
+console.log(data) // linklist ID
+
+// character ID 42 unlikes note ID 43-5
+await contract.unlinkNote(42, 43, 5, 'like')
+```
+
+To query:
+
+```ts
+// get all the notes that character 42 likes
+const result = await indexer.getLinks(42, {
+  linkType: 'like',
+  linkItemType: 'Note',
+})
+console.log(result.list) // all the "like" links of character 42
+
+// get all the characters that like note 43-5
+const result = await indexer.getBacklinksOfNote(43, 5, {
+  linkType: 'like',
+})
+console.log(result.list) // all the "like" links that have note 43-5 as the target
+
+// get the like relationship between character 42 and note 43-5
+const result = await indexer.getLinks(42, {
+  toCharacterId: 43,
+  toItemId: 5,
+  linkType: 'like',
+  linkItemType: 'Note',
+})
+console.log(result.list) // the list may contain 0 or 1 link
+```
+
+

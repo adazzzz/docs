@@ -118,3 +118,123 @@ class CharacterMetadata {
   }[]
 }
 ```
+
+### `name`
+
+The display name.
+
+It can be any string.
+
+### `avatars`
+
+The avatars.
+
+The first avatar is the primary avatar. It is used as the default avatar.
+
+The avatars should be a list of URLs (https or ipfs) pointing to images. The URLs should be accessible by the client.
+
+For example, the following is a valid list of avatars:
+
+```json
+[
+  "https://example.com/avatar.png",
+  "ipfs://Qm.../avatar.png"
+]
+```
+
+### `bio`
+
+The bio of the character.
+
+It can be any string, describing the character's background, personality, or any other relevant information.
+
+### `websites`
+
+The websites associated with the character.
+
+The websites should be a list of URLs (https) pointing to the character's personal websites, social media profiles, or any other relevant sites.
+
+For example, the following is a valid list of websites:
+
+```json
+[
+  "https://example.com",
+  "https://twitter.com/character"
+]
+```
+
+### `banners`
+
+The banners of the character.
+
+The banners should be a list of objects, each containing an `address` and a `mime_type`. The `address` should be a URL (https or ipfs) pointing to an image, and the `mime_type` should be the MIME type of the image file.
+
+For example, the following is a valid list of banners:
+
+```json
+[
+  {
+    "address": "https://example.com/banner.png",
+    "mime_type": "image/png"
+  },
+  {
+    "address": "ipfs://Qm.../banner.jpg",
+    "mime_type": "image/jpeg"
+  }
+]
+```
+
+### `connected_accounts`
+
+The connected social accounts of the character.
+
+The connected accounts should be a list of strings, each following the `csb://` scheme. The format is `csb://account:<identity>@<platform>`.
+
+For example, the following is a valid list of connected accounts:
+
+```json
+[
+  "csb://account:someone@twitter",
+  "csb://account:someone@github"
+]
+```
+
+### `connected_avatars`
+
+The special connected avatars of the character.
+
+The connected avatars should be a list of strings, each following the `csb://` scheme. The format is `csb://asset:<contract_address>-<token_id>@<network>`.
+
+For example, the following is a valid list of connected avatars:
+
+```json
+[
+  "csb://asset:0x5452c7fb99d99fab3cc1875e9da9829cb50f7a13-753@ethereum"
+]
+```
+
+### `attributes`
+
+The custom attributes of the character.
+
+The attributes should be a list of objects, each containing a `value`, an optional `trait_type`, and an optional `display_type`. The `value` can be a string.
+
+For example, the following is a valid list of attributes:
+
+```json
+[
+  {
+    "value": "post",
+    "trait_type": "type"
+  },
+  {
+    "value": "https://example.com",
+    "trait_type": "URL"
+  },
+  {
+    "value": 1546360800,
+    "trait_type": "Birthday",
+    "display_type": "date"
+  }
+]
+```

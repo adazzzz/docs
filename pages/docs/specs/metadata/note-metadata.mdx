@@ -80,14 +80,6 @@ export class NoteMetadataAttachmentBase<
 
 export class NoteMetadata extends Mixin(BaseMetadata, AttributesMetadata) {
   /**
-   * The tags of this note.
-   *
-   * @example
-   * ['article', 'dairy']
-   */
-  tags?: string[]
-
-  /**
    * The title of this note.
    */
   title?: string
@@ -99,6 +91,14 @@ export class NoteMetadata extends Mixin(BaseMetadata, AttributesMetadata) {
    * '# Hello World\n\nThis is a markdown note.'
    */
   content?: string
+
+  /**
+   * The tags of this note.
+   *
+   * @example
+   * ['article', 'dairy']
+   */
+  tags?: string[]
 
   /**
    * The attachments of this note.
@@ -172,3 +172,106 @@ export class NoteMetadata extends Mixin(BaseMetadata, AttributesMetadata) {
   }[]
 }
 ```
+
+### `title`
+
+The title.
+
+### `content`
+
+The (markdown) content.
+
+```json
+"# Hello World\n\nThis is a markdown note."
+```
+
+### `tags`
+
+The tags. It is an array of any strings. It is used to categorize the note.
+
+```json
+["article", "dairy"]
+```
+
+### `attachments`
+
+The attachments. It can include medias like images, videos, etc.
+
+For example:
+
+```json
+[
+  {
+    "name": "image.png",
+    "address": "ipfs://QmW1Y2Z3X4C5V6B7N8M9K0J1H2G3F4D5S6A7Q8W9E0R1T2Y3U4I5O6P7L8",
+    "mime_type": "image/png",
+    "size_in_bytes": 123456,
+    "alt": "A picture of a cat.",
+    "width": 1024,
+    "height": 768
+  },
+  {
+    "name": "video.mp4",
+    "address": "ipfs://QmW1Y2Z3X4C5V6B7N8M9K0J1H2G3F4D5S6A7Q8W9E0R1T2Y3U4I5O6P7L8",
+    "mime_type": "video/mp4",
+    "size_in_bytes": 123456,
+    "alt": "A video of a cat.",
+    "width": 1024,
+    "height": 768
+  }
+]
+```
+
+### `sources`
+
+The source of this note. I.e. where it was originally created. For example, it could be your app's name so that you could filtering the notes by the source in your app.
+
+### `external_urls`
+
+Where this note was originally created. User can view this note on this location.
+
+For example, if you create a note on Twitter, and then sync it to Crossbell, you can put the URL of the original tweet in this field:
+
+```json
+["https://twitter.com/_Crossbell/status/1555900801058488322"]
+```
+
+### `date_published`
+
+The date this content was published, following the ISO 8601 format.
+
+```json
+"2022-01-01T00:00:00Z"
+```
+
+If not specified, the note created time on blockchain will be used as the published date.
+
+### `content_warning`
+
+A content warning for this note. On the client side, this will be displayed as a warning.
+
+There are three types of content warnings:
+
+- `nsfw`: Not Safe For Work. It is used to mark content that is not suitable for work.
+- `sensitive`: It is used to mark content that is sensitive.
+- `spoiler`: It is used to mark content that contains spoilers.
+
+### `variant`
+
+The variant of this note.
+
+There are two variants:
+
+- `undefined`: the normal note.
+- `"achievement"`: the achievement variant.
+
+### `attributes`
+
+Custom attributes.
+
+```json
+[
+  { "value": "post", "trait_type": "type" },
+  { "value": "https://example.com", "trait_type": "URL" },
+  { "value": 1546360800, "trait_type": "Birthday", "display_type": "date" }
+]

@@ -185,11 +185,9 @@ console.log(result.list) // all the "like" links that have note 43-5 as the targ
 // get the like relationship between character 42 and note 43-5
 const result = await indexer.getLinks(42, {
   toCharacterId: 43,
-  toItemId: 5,
+  toNoteId: 5,
   linkType: 'like',
   linkItemType: 'Note',
 })
 console.log(result.list) // the list may contain 0 or 1 link
 ```
-
-

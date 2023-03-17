@@ -1,0 +1,64 @@
+---
+title: Operator
+---
+
+# Operator
+
+Operator is a role that can be granted to an address to perform certain operations on behave of a character. For example:
+
+- A operator can help a character edit their username, avatar, bio, etc.
+- A operator can help a character post, edit their note.
+- A operator can help a character follows others.
+- ...
+
+An address can be an operator for multiple characters, and a character can have multiple operators.
+
+An operator can be granted granular permissions to perform certain operations on behave of a character. You can learn more about the permissions in the [Spec - Operator - Permissions](/docs/specs/operator/permissions) section.
+
+## Topics
+
+### Robot: Sync Tweets from Twitter
+
+If you want to sync your tweets from Twitter to Crossbell automatically, here is the way using a robot operator to do it:
+
+1. Create a wallet to play the role of the robot. Set it up on a server to run 24/7 monitoring your Twitter account.
+2. Grant the robot address the permission `"POST_NOTE"` to be able to post notes on behave of your character. This can be done with [`contract.grantOperatorsForCharacter`](/sdk/js/contract/operator/grant-operator#grantoperatorpermissionsforcharacter).
+3. When the robot detects a new tweet, it can post a note on behave of your character with [`contract.postNote`](/sdk/js/contract/note/create-note#postnote).
+
+You can basically make a robot to do anything you want on behave of your character. Use your imagination!
+
+### Note Editing Collaboration
+
+Imagine a scenario where you’re a KOL having millions of followers on Crossbell and you’ve made a rough outlined draft about your vision of ‘Crossbell is the future’ but you don’t really had the time to take care of things here and there, so you have to ask 2 of your employees as to polish your draft.
+
+You can post your draft with [`contract.postNote`](/sdk/js/contract/note/create-note#postnote) first, then grant your employees the permission to edit your note with [`contract.grantOperatorsForNote`](/sdk/js/contract/operator/grant-operator#grantoperatorsfornote):
+
+```ts
+// Post a note
+const { data } = await contract.postNote(
+  42,
+  "https://example.com/note.json",
+);
+
+// Grant operators
+await contract.grantOperatorsForNote(
+  42,
+  data.noteId,
+  [
+    "0x1234567890123456789012345678901234567890",
+    "0x2345678901234567890123456789012345678901",
+  ],
+  [],
+);
+```
+
+Now your employees can edit your note with [`contract.setNoteUri`](/sdk/js/contract/note/update-note#setnoteuri):
+
+```ts
+// Set note URI
+await contract.setNoteUri(
+  42,
+  data.noteId,
+  "https://example.com/note-edited.json",
+);
+```

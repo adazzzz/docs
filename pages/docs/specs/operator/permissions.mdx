@@ -1,0 +1,63 @@
+---
+title: Permissions
+---
+
+# Permissions
+
+On Crossbell, **operators** are authorities that users trust and set for their characters to send transactions on behalf of themselves so as to avoiding the hassle of signing transactions every time.
+
+An address can be an operator for multiple characters, and a character can have multiple operators.
+
+The operator will be granted granular permissions to perform certain actions on behalf of the user. For example, an operator can be granted permission to post notes on behalf of the user, but not to change the user's name.
+
+## Permission Bitmap Layout
+
+A permission bitmap is a 32-byte array that represents a set of permissions. Each bit in the array represents a permission. The first bit represents the permission with ID 0, the second bit represents the permission with ID 1, and so on.
+
+Here is the layout of the permission bitmap:
+
+| Permission ID | Method                        | Suggested Permission Type |
+|---------------|-------------------------------|---------------------------|
+| 0             | SET_HANDLE                    | Owner Reserve             |
+| 1             | SET_SOCIAL_TOKEN              | Owner Reserve             |
+| 2             | GRANT_OPERATOR_PERMISSIONS    | Owner Reserve             |
+| 3             | GRANT_OPERATORS_FOR_NOTE      | Owner Reserve             |
+| ···           |                               | Owner Reserve             |
+|  [21, 175]    | reserved for future           |                           |
+| 176           | SET_CHARACTER_URI             | Operator Sign             |
+| 177           | SET_LINKLIST_URI              | Operator Sign             |
+| 178           | LINK_CHARACTER                | Operator Sign             |
+| 179           | UNLINK_CHARACTER              | Operator Sign             |
+| 180           | CREATE_THEN_LINK_CHARACTER    | Operator Sign             |
+| 181           | LINK_NOTE                     | Operator Sign             |
+| 182           | UNLINK_NOTE                   | Operator Sign             |
+| 183           | LINK_ERC721                   | Operator Sign             |
+| 184           | UNLINK_ERC721                 | Operator Sign             |
+| 185           | LINK_ADDRESS                  | Operator Sign             |
+| 186           | UNLINK_ADDRESS                | Operator Sign             |
+| 187           | LINK_ANYURI                  | Operator Sign             |
+| 188           | UNLINK_ANYURI                | Operator Sign             |
+| 189           | LINK_LINKLIST                | Operator Sign             |
+| 190           | UNLINK_LINKLIST              | Operator Sign             |
+| 191           | SET_LINK_MODULE_FOR_CHARACTER | Operator Sign             |
+| 192           | SET_LINK_MODULE_FOR_NOTE      | Operator Sign             |
+| 193           | SET_LINK_MODULE_FOR_LINKLIST | Operator Sign             |
+| 194           | SET_MINT_MODULE_FOR_NOTE      | Operator Sign             |
+| 195           | SET_NOTE_URI                  | Operator Sign             |
+| 196           | LOCK_NOTE                     | Operator Sign             |
+| 197           | DELETE_NOTE                   | Operator Sign             |
+| 198           | POST_NOTE_FOR_CHARACTER       | Operator Sign             |
+| 199           | POST_NOTE_FOR_ADDRESS         | Operator Sign             |
+| 200           | POST_NOTE_FOR_LINKLIST       | Operator Sign             |
+| 201           | POST_NOTE_FOR_NOTE            | Operator Sign             |
+| 202           | POST_NOTE_FOR_ERC721          | Operator Sign             |
+| 203           | POST_NOTE_FOR_ANYURI         | Operator Sign             |
+| ···           |                               | Operator Sign             |
+| 236           | POST_NOTE                     | Operator Sync             |
+| ···           |                               | Operator Sync             |
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout>
+The suggested permission type is a suggestion for how the permission should be implemented. It is not a requirement. A user can grant an operator any permission type they want.
+</Callout>

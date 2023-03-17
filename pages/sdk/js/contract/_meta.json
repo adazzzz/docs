@@ -3,5 +3,6 @@
 	"character": "Character",
 	"note": "Note",
 	"link": "Link",
-	"link-mint-module": "Link/Mint Module"
+	"link-mint-module": "Link/Mint Module",
+	"operator": "Operator"
 }

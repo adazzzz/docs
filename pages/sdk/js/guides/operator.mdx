@@ -15,6 +15,59 @@ An address can be an operator for multiple characters, and a character can have 
 
 An operator can be granted granular permissions to perform certain operations on behave of a character. You can learn more about the permissions in the [Spec - Operator - Permissions](/docs/specs/operator/permissions) section.
 
+## Granting Operators
+
+You can:
+
+- [`grantOperatorPermissionsForCharacter`](/sdk/js/contract/operator/grant-operator): Grant an operator to a character. The operator can perform certain operations on behave of the character.
+- [`grantOperatorsForNote`](/sdk/js/contract/operator/grant-operator): Grant an operator to a note. The operator can edit the note.
+
+Please refer to the API documentation for more details.
+
+## Revoking Operators
+
+Say that we have granted an operator `0x1234567890123456789012345678901234567890` to a character `42` as below:
+
+```ts
+contract.grantOperatorPermissionsForCharacter(
+  42, // characterId
+  '0x1234567890123456789012345678901234567890', // operator
+  ['LINK_NOTE', 'UNLINK_NOTE', 'POST_NOTE'] // permissions
+)
+```
+
+If we want to revoke the operator, we can do so by passing an empty array to the `permissions` argument:
+
+```ts
+contract.grantOperatorPermissionsForCharacter(
+  42, // characterId
+  '0x1234567890123456789012345678901234567890', // operator
+  [] // empty array to revoke the operator
+)
+```
+
+## Query Operators
+
+To query the operators of a character:
+
+```ts
+// Query the operators of a character
+const { list } = await indexer.getCharacterOperators(42)
+
+// Query a specific operator of a character
+const data = await indexer.getCharacterOperator(42, '0x1234567890123456789012345678901234567890')
+```
+
+To query the operators of a note:
+
+```ts
+// Query the operators of a note
+const { list } = await indexer.getNoteOperators(42)
+
+// Query a specific operator of a note
+const data = await indexer.getNoteOperator(42, '0x1234567890123456789012345678901234567890')
+```
+
 ## Topics
 
 ### Robot: Sync Tweets from Twitter

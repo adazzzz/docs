@@ -50,6 +50,23 @@ In this case, the SDK will automatically upload the metadata to IPFS and create 
 
 Please refer to [Note Metadata](/docs/specs/metadata/note-metadata) for more details.
 
+### Link and Unlink a Note
+
+You can use [link](/sdk/js/guides/link) to link a note to another note.
+
+For example, a character `42` likes the note `5` written by another character `43`:
+
+```ts
+// character ID 42 likes note ID 43-5 (the 5th note of character 43)
+const { data } = await contract.linkNote(42, 43, 5, 'like')
+console.log(data) // linklist ID
+
+// character ID 42 unlikes note ID 43-5
+await contract.unlinkNote(42, 43, 5, 'like')
+```
+
+Please refer to [Link Topics - Like and Unlike a Note](/sdk/js/guides/link#derived-case-like-and-unlike-a-note) for more details.
+
 ### Note Link/Mint Module
 
 import { Callout } from 'nextra-theme-docs'
@@ -58,13 +75,7 @@ import { Callout } from 'nextra-theme-docs'
   Before attaching a link or a module to a note, please refer to the [Concepts - Mint/Link Module](/docs/concepts/link-mint-module) section to learn more about what a module is.
 </Callout>
 
-// TODO @songkeys
-
 Please refer to the [`linkModule` options API](/sdk/js/contract/note/create-note#optionslinkmodule-optional) and [`mintModule` options API](/sdk/js/contract/note/create-note#optionsmintmodule-optional) for more details.
-
-### Link a Note
-
-// TODO @songkeys
 
 ### Mint a Note
 
@@ -90,7 +101,119 @@ This minted note NFT is of ERC721 type. It can be transferred to another address
 
 Please refer to [`mintNote`](/sdk/js/contract/note/mint-note#mintnote) for more details.
 
+### Query Notes
+
+You can query the notes from the indexer.
+
+For example, to query the notes of character `42`:
+
+```ts
+const { list } = await indexer.getNotes({
+  characterId: 42,
+});
+```
+
 ## Topics
+
+### Reply to a Note
+
+#### Reply
+
+A character can reply to a note. This is done by using the [`contract.postNoteForNote`](/sdk/js/contract/note/create-note#postnotefornote) method:
+
+```ts
+// character ID 42 replies to note ID 43-5 (the 5th note of character 43)
+const result = contract.postNoteForNote(
+  42, // character ID
+  { content: "Thank you!" }, // note metadata
+  43, // target character ID
+  5, // target note ID
+);
+console.log(result) // The note ID of the reply, e.g. 1
+```
+
+To query all the replies of the note `43-5`:
+
+```ts
+const { list } = await indexer.getNotes({
+  toCharacterId: 43,
+  toNoteId: 5,
+});
+console.log(list) // The list of notes that reply to note 43-5, which includes the note 42-1
+```
+
+#### Reply to a Reply (Thread)
+
+Of course, the character `43` can also reply to the reply:
+
+```ts
+// character ID 43 replies to note ID 42-6 (the 6th note of character 42)
+contract.postNoteForNote(
+  43, // character ID
+  { content: "You're welcome!" }, // note metadata
+  42, // target character ID
+  1, // target note ID
+);
+```
+
+This becomes a tree structure of notes:
+
+```text
+43-5
+└── 42-1
+    └── 43-6
+```
+
+This is commonly called a "note thread". In real-world applications, the thread might be more complex:
+
+```text
+43-5
+├── 42-1
+│   ├── 43-6
+│   └── 42-2
+│       └── 43-7
+└── 42-3
+    └── 43-8
+```
+
+We can query the whole thread recursively:
+
+```ts
+async function getNoteThread(
+  characterId: number,
+  noteId: number,
+  depth: number = 0,
+): Promise<Note[]> {
+  const { list } = await indexer.getNotes({
+    toCharacterId: characterId,
+    toNoteId: noteId,
+  });
+
+  if (depth === 0) {
+    return list;
+  }
+
+  const replies = await Promise.all(
+    list.map((note) =>
+      getNoteThread(note.characterId, note.noteId, depth - 1),
+    ),
+  );
+
+  return list.concat(...replies);
+}
+```
+
+Or using the `includeNestedNotes` parameter to fetch them in one query (recommended):
+
+```ts
+const { list } = await indexer.getNotes({
+  toCharacterId: 43,
+  toNoteId: 5,
+  includeNestedNotes: true,
+  nestedNotesDepth: 3, // 3 levels of replies, max is 3 for performance
+  nestedNotesLimit: 10, // 10 replies per level
+});
+```
 
 ### Note Variant: "Achievement"
 

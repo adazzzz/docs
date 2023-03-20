@@ -1,5 +1,10 @@
 {
+	"wallet": "",
 	"character": "",
 	"note": "",
-	"link": ""
+	"link": "",
+	"feed": "",
+	"notification": "",
+	"operator": "",
+	"search": ""
 }

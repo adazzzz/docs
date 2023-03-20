@@ -1,0 +1,121 @@
+---
+title: Feed
+---
+
+# Feed
+
+The feed is a list of all the activites that have happened on Crossbell.
+
+## Feed Types
+
+Here is a list of all the feed types and what they mean.
+
+```ts
+export enum FeedType {
+  CREATE_CHARACTER = 'CREATE_CHARACTER',
+  UPDATE_CHARACTER_HANDLE = 'UPDATE_CHARACTER_HANDLE',
+  UPDATE_CHARACTER_METADATA = 'UPDATE_CHARACTER_METADATA',
+  UPDATE_PRIMARY_CHARACTER = 'UPDATE_PRIMARY_CHARACTER',
+  TRANSFER_CHARACTER = 'TRANSFER_CHARACTER',
+  ADD_OPERATOR = 'ADD_OPERATOR',
+  REMOVE_OPERATOR = 'REMOVE_OPERATOR',
+  CREATE_LINKLIST = 'CREATE_LINKLIST',
+  UPDATE_LINKLIST = 'UPDATE_LINKLIST',
+  TRANSFER_LINKLIST = 'TRANSFER_LINKLIST',
+  LINK = 'LINK',
+  UNLINK = 'UNLINK',
+  POST_NOTE = 'POST_NOTE',
+  POST_NOTE_FOR_NOTE = 'POST_NOTE_FOR_NOTE',
+  POST_NOTE_FOR_ANY_URI = 'POST_NOTE_FOR_ANY_URI',
+  POST_NOTE_FOR_ADDRESS = 'POST_NOTE_FOR_ADDRESS',
+  POST_NOTE_FOR_LINKLIST = 'POST_NOTE_FOR_LINKLIST',
+  POST_NOTE_FOR_CHARACTER = 'POST_NOTE_FOR_CHARACTER',
+  POST_NOTE_FOR_ERC721 = 'POST_NOTE_FOR_ERC721',
+  UPDATE_NOTE = 'UPDATE_NOTE',
+  LOCK_NOTE = 'LOCK_NOTE',
+  DELETE_NOTE = 'DELETE_NOTE',
+  MINT_NOTE = 'MINT_NOTE',
+  TRANSFER_MINTED_NOTE = 'TRANSFER_MINTED_NOTE',
+  SET_LINK_MODULE = 'SET_LINK_MODULE',
+  SET_MINT_MODULE = 'SET_MINT_MODULE',
+  TIP_CHARACTER = 'TIP_CHARACTER',
+}
+```
+
+- `CREATE_CHARACTER` - A character was created.
+- `UPDATE_CHARACTER_HANDLE` - A character's handle was updated.
+- `UPDATE_CHARACTER_METADATA` - A character's metadata was updated.
+- `UPDATE_PRIMARY_CHARACTER` - A character's primary character was updated.
+- `TRANSFER_CHARACTER` - A character was transferred.
+- `ADD_OPERATOR` - An operator was added to a character.
+- `REMOVE_OPERATOR` - An operator was removed from a character.
+- `CREATE_LINKLIST` - A linklist was created.
+- `UPDATE_LINKLIST` - A linklist was updated.
+- `TRANSFER_LINKLIST` - A linklist was transferred.
+- `LINK` - A link was created.
+- `UNLINK` - A link was removed.
+- `POST_NOTE` - A note was posted.
+- `POST_NOTE_FOR_NOTE` - A note was posted for another note.
+- `POST_NOTE_FOR_ANY_URI` - A note was posted for any URI.
+- `POST_NOTE_FOR_ADDRESS` - A note was posted for an address.
+- `POST_NOTE_FOR_LINKLIST` - A note was posted for a linklist.
+- `POST_NOTE_FOR_CHARACTER` - A note was posted for a character.
+- `POST_NOTE_FOR_ERC721` - A note was posted for an ERC721 token.
+- `UPDATE_NOTE` - A note was updated.
+- `LOCK_NOTE` - A note was locked.
+- `DELETE_NOTE` - A note was deleted.
+- `MINT_NOTE` - A note was minted.
+- `TRANSFER_MINTED_NOTE` - A minted note was transferred.
+- `SET_LINK_MODULE` - A link module was set.
+- `SET_MINT_MODULE` - A mint module was set.
+- `TIP_CHARACTER` - A character was tipped.
+
+## Get Feed
+
+### Get Feed of a Character
+
+For example, we want to get the feed of character `42`:
+
+```ts
+const { list } = indexer.getFeedsOfCharacter(42)
+```
+
+You can filter the feed by type:
+
+```ts
+import { FeedType } from 'crossbell.js'
+
+const { list } = indexer.getFeedsOfCharacter(42, {
+  type: [FeedType.CREATE_CHARACTER, FeedType.UPDATE_CHARACTER_HANDLE],
+})
+```
+
+Note that if you want to get the feed of posting notes, you have to specify all the `POST_NOTE*` types:
+
+```ts
+import { FeedType } from 'crossbell.js'
+
+const { list } = indexer.getFeedsOfCharacter(42, {
+  type: [
+    FeedType.POST_NOTE,
+    FeedType.POST_NOTE_FOR_NOTE,
+    FeedType.POST_NOTE_FOR_ANY_URI,
+    FeedType.POST_NOTE_FOR_ADDRESS,
+    FeedType.POST_NOTE_FOR_LINKLIST,
+    FeedType.POST_NOTE_FOR_CHARACTER,
+    FeedType.POST_NOTE_FOR_ERC721,
+  ],
+})
+```
+
+### Timeline: Get Feed of a Character's Following
+
+In real-world social media, you can follow other users. In Crossbell, you can follow other characters with [`linkCharacter`](/sdk/js/contract/link/create-link#linkcharacter). (See [Guide - Link - Topics - Follow and Unfollow a Character](/sdk/js/guides/link#follow-and-unfollow-a-character).)
+
+If a character `42` follows a group of characters, we can get the feed of the characters `42` follows:
+
+```ts
+const { list } = indexer.getFollowingFeedsOfCharacter(42)
+```
+
+This is commonly called the "home feed" or "timeline" in social media.

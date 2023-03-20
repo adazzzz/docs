@@ -119,3 +119,102 @@ You can update a character using a variety of methods. For example:
 ## Delete a Character
 
 - [Burn character](/sdk/js/contract/character/burn-character)
+
+## Topics
+
+### Update Character Metadata
+
+#### Example: Add an Avatar
+
+Let's say we have a character `42` with the following metadata:
+
+```json
+{
+  "name": "John Doe",
+  "bio": "I am the best character ever"
+}
+```
+
+If this character wants to add a new avatar, we can use the [`contract.changeCharacterMetadata`](/sdk/js/contract/character/update-metadata#changecharactermetadata) method:
+
+```ts
+contract.changeCharacterMetadata('42', metadata => {
+  metadata = {
+    ...metadata,
+    avatars: ['https://example.com/avatar.png'],
+  }
+  return metadata
+})
+```
+
+The `metadata` parameter is the current metadata of the character. You can modify it and return the new metadata. The SDK will automatically upload the new metadata to IPFS and update the character.
+
+#### Example: Update the Attributes
+
+As described in the [Character Metadata](/docs/specs/metadata/character-metadata#attributes) section, the character metadata can have an `attributes` field. This field is an array of attributes. Each attribute has a `trait_type` and a `value` field.
+
+Let's say our character `42` has the following metadata:
+
+```json
+{
+  "name": "John Doe",
+  "bio": "I am the best character ever",
+  "avatars": ["https://example.com/avatar.png"],
+  "attributes": [
+    {
+      "trait_type": "Strength",
+      "value": 100
+    },
+    {
+      "trait_type": "Agility",
+      "value": 100
+    }
+  ]
+}
+```
+
+We want to add a new attribute `Intelligence` with a value of `100`:
+
+```ts
+contract.changeCharacterMetadata(42, metadata => {
+  metadata = {
+    ...metadata,
+    attributes: [
+      ...metadata.attributes, // copy the existing attributes
+      {
+        trait_type: 'Intelligence',
+        value: 100,
+      },
+    ],
+  }
+  return metadata
+})
+```
+
+If we want to update the value of an existing attribute, we can use the [`Array.prototype.map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) method:
+
+```ts
+contract.changeCharacterMetadata(42, metadata => {
+  metadata = {
+    ...metadata,
+    attributes: metadata.attributes.map(attribute => {
+      if (attribute.trait_type === 'Intelligence') {
+        return {
+          ...attribute,
+          value: 200,
+        }
+      }
+      return attribute
+    }),
+  }
+  return metadata
+})
+```
+
+#### Pitfall: Overwriting vs Merging
+
+We are using the [`contract.changeCharacterMetadata`](/sdk/js/contract/character/update-metadata#changecharactermetadata) method to update the character metadata. This method helps us to update the metadata with **merging** instead of **overwriting**.
+
+There is another method called [`contract.setCharacterMetadata`](/sdk/js/contract/character/update-metadata#setcharacteruri). This method will **overwrite** the metadata with the new metadata, which in most cases is NOT what we want because it will remove all the existing metadata of the character.
+
+Please refer to [Contract API - Update Metadata](/sdk/js/contract/character/update-metadata) to learn more.

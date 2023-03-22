@@ -4,26 +4,40 @@ title: Architecture
 
 # Architecture
 
-Crossbell is a decentralized platform that lets users **own their social activities** on the **web3** ecosystem. It aims to empower users to control their own data and identity, and to enjoy the benefits of web3 without compromising usability or privacy.
+Crossbell is a decentralized platform where many social applications can be built upon. Besides chains and contracts, there are many other useful components or tools that can be used together to build applications.
 
-## Components
+This article will first introduce some important components and concepts, and then use a basic social scenario as an example to explain how to interact with different components and finally build it on Crossbell.
 
-### Chain
+## Concept 
 
-// TODO
+### Chain and Contracts
 
-### Protocol (Contract)
+Crossbell is an EVM blockchain with PoA consensus, maintained by a group of trusted validators. Adding or removing validators requires approval from the majority of active validators. The block interval is 1 second so as to confirm transactions quickly. It has been scheduled to be open sourced, though it hasn’t due some security concerns.
 
-// TODO
+Crossbell supports Solidity smart contracts, but currently only developer addresses in whitelist can deploy. We are planning to let validators govern the whitelist. In the long run, it will eventually become a fully open network. 
+
+### Protocol
+
+We observed social interactions on a daily basis and extracted the basic elements from them. We then created a set of smart contracts that simulate these elements, such as social graph information and posting notes. These contracts have been deployed on the chain and serve as the foundation of our protocol. All applications built thereafter should interact with these contracts. For more details about the protocol, please refer to the [next section](./protocol).
 
 ### IPFS
 
-// TODO
+IPFS (InterPlanetary File System) is a peer-to-peer protocol that enables the storage and sharing of files in a decentralized manner. In Crossbell, IPFS is recommended for storing the all detailed information and files such as images or videos, whereas the IPFS hashes of these files are stored on the Crossbell chain. By using IPFS, Crossbell ensures that files are accessible even if the original uploader is no longer active.
 
 ### Indexer
 
-// TODO
+Instead of querying data from the contract directly, we also provide an indexer that supports more complicated query. Both the data from Crossbell chain and the IPFS network will be indexed at time. There are a lots of different apis of the indexer that help developers read and filter on-chain data more efficiently. 
 
-### Apps
+### SDK
 
-// TODO
+To read and write the data with the contract more easily, we provide an [SDK](/sdk/js) for developers. The SDK wraps the social interactions as the protocol defined so that a developer has no need to fully understand all the details of the contract design. Also the indexer apis mentioned above are built-in as well. In short, by using the SDK, developers can quickly and easily build applications that interact with the Crossbell platform.
+
+All the above components work together is described by the following figure:
+
+![](./concepts.png)
+
+## Scenario
+
+Imagine now there’s a basic scenario, a developer is aimed at to build an app upon Crossbell, which lets each user post note, follow others, and see others’ feeds. What should he/she do?
+
+//TODO

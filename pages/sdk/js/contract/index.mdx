@@ -20,8 +20,6 @@ import { Contract } from 'crossbell.js'
 // Create a new contract instance with metamask provider
 const provider = window.ethereum
 const contract = new Contract(provider)
-
-await contract.connect() // Connect to the chain
 ```
 
 You can also use other providers.
@@ -33,8 +31,6 @@ import { Contract } from 'crossbell.js'
 
 const privateKey = '0xabcdef0123456789012345678901234567890123456789012345678901234'
 const contract = new Contract(privateKey)
-
-await contract.connect() // Connect to the chain
 ```
 
 The private key is not stored in the contract. It is only used to sign the transaction.
@@ -49,18 +45,9 @@ You can also connect with a read-only provider without passing anything into the
 import { Contract } from 'crossbell.js'
 
 const contract = new Contract();
-
-await contract.connect() // Connect to the chain
 ```
 
 In this case, you can't do write operations like `createCharacter` but only read operations like `getCharacter`.
-
-
-import { Callout } from 'nextra-theme-docs';
-
-<Callout type="warning">
-  You need to call `await contract.connect()` before using the contract.
-</Callout>
 
 ## Methods
 

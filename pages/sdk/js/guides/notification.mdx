@@ -44,6 +44,6 @@ You can filter the notifications by type:
 
 ```ts
 const { list } = await indexer.getNotificationsOfCharacter(42, {
-  type: [NotificationType.LINKED, NotificationType.UNLINKED], // only get linked and unlinked notifications
+  type: [NotificationType.NOTE_POSTED], // only get NOTE_POSTED notifications
 })
 ```

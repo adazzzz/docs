@@ -4,5 +4,6 @@
 	"note": "Note",
 	"link": "Link",
 	"link-mint-module": "Link/Mint Module",
-	"operator": "Operator"
+	"operator": "Operator",
+	"tip": "Tip"
 }

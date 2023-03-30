@@ -8,6 +8,10 @@ description: Module Store
 import { useSSG } from 'nextra/ssg'
 import { Code, Pre } from 'nextra/components'
 
+export const config = {
+	runtime: 'edge',
+}
+
 export const getStaticProps = async () => {
   const list = await fetch(
     'https://raw.githubusercontent.com/Crossbell-Box/Crossbell-Contracts/main/deployments/modules.json'

@@ -1,5 +1,5 @@
 /* eslint-env node */
-import { ImageResponse } from '@vercel/og'
+import { ImageResponse } from '@cloudflare/pages-plugin-vercel-og/api'
 
 export const config = {
 	runtime: 'edge',

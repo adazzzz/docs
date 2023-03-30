@@ -4,4 +4,18 @@ title: Wallet
 
 # Wallet
 
-// TODO @songkeys
+A Ethereum-compatible crypto wallet is required for users to play on Crossbell.
+
+There are many wallet management apps available on the market. For example: Metamask, Trust Wallet, Coinbase Wallet, etc. User can intall one of them to manage their wallet and connect to Crossbell.
+
+## Wallet UI for Apps
+
+Wallet UI is a library that provides a simple interface for users to interact with their Ethereum wallet. It should be needed by the Crossbell app to connect to the user's wallet.
+
+### React (Recommended)
+
+We provide a [@crossbell/connectkit](https://crossbell-dev.vercel.app/docs/quick-start) library with a well designed UI for users to connect their wallet to your app. With this library, you can easily integrate many features of Crossbell like character management, balance claiming, etc.
+
+### VanillaJS (Third-party)
+
+Web3Modal provides [a VanillaJS library](https://docs.walletconnect.com/2.0/web3modal/html-js/installation). However, it does not integrate with Crossbell very well, like the character management, balance claiming, etc. You may need to implement them by yourself.

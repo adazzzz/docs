@@ -267,7 +267,7 @@ const { list } = await indexer.getNotes({
 });
 ```
 
-##### Query Achievement Notes Minted by an address
+##### Query Achievement Notes Minted by an Address
 
 You can query with the `variant` field in `indexer.getMintedNotesOfAddress` to get the list of achievement notes minted by an address
 
@@ -301,3 +301,92 @@ contract.postNote(
 ```
 
 The above code will attach a `ApproveMintModule` to the achievement note, which means that only these two addresses can mint the achievement note, and each address can mint it only once (`1`).
+
+### Restrict Minting
+
+#### Approve Mint Module
+
+##### Attach Approve Mint Module
+
+As we have seen in the previous section, you can attach the mint module `ApproveMintModule` to a note to restrict who can mint it.
+
+```ts
+contract.postNote(
+  42, // character ID
+  "https://example.com/my-sponsor-nft.json", // note metadata URL
+  {
+    mintModule: {
+      address: "0x328610484ba1fAAE0fCDEe44990D199cD84c8608",
+      data: [
+        ['0x1234567890123456789012345678901234567890', '0xabc123def456abc123def456abc123def456abc1'],
+        1,
+      ]
+    },
+  }
+);
+```
+
+In this example, only addresses `0x1234567890123456789012345678901234567890` and `0xabc123def456abc123def456abc123def456abc1` can mint the note, and each address can mint it only once (`1`). This is called `initData`.
+
+##### Query Approve Mint Module
+
+How do we recover the mint module information from a note? Here is an example.
+
+For example, the above code posted a note `42-5` (Character ID: `42`, Note Id: `5`), you can query the mint module attached with `indexer.getMintModules`:
+
+```ts
+const { list } = await indexer.getMintModules({
+  toCharacterId: 42,
+  toNoteId: 5,
+});
+const mintModule = list[0]; // there should be only one mint module for the specified note
+console.log(mintModule);
+```
+
+The result will look like this:
+
+```json {5}
+{
+  "targetItemType": "Note",
+  "linkValue": "42-5",
+  "contractAddress": "0x328610484ba1faae0fcdee44990d199cd84c8608",
+  "initData": "0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000001234567890123456789012345678901234567890000000000000000000000000abc123def456abc123def456abc123def456abc1",
+  "returnData": "0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000001234567890123456789012345678901234567890000000000000000000000000abc123def456abc123def456abc123def456abc1",
+  "toCharacterId": 45,
+  "toNoteId": 188,
+  "operator": "0xc560eb6fd0c2eb80df50e5e06715295ae1205049",
+  "createdAt": "2023-03-30T16:26:10.000Z",
+  "updatedAt": "2023-03-30T16:26:10.000Z",
+  "deletedAt": null,
+  "transactionHash": "0x5ea8d21d8c6edd5ed5f37a00ac5fc31b536d8befec12d592b9e4bda8e8445a15",
+  "blockNumber": 29834475,
+  "logIndex": 1,
+  "updatedTransactionHash": "0x5ea8d21d8c6edd5ed5f37a00ac5fc31b536d8befec12d592b9e4bda8e8445a15",
+  "updatedBlockNumber": 29834475,
+  "updatedLogIndex": 1
+}
+```
+
+`initData` is the encoded init data string we passed in the previous section. We can decode it with `contract.decodeModuleInitData`:
+
+```ts
+const decodedInitData = await contract.decodeModuleInitData(
+  '0x328610484ba1faae0fcdee44990d199cd84c8608',
+  '0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000001234567890123456789012345678901234567890000000000000000000000000abc123def456abc123def456abc123def456abc1',
+);
+console.log(decodedInitData);
+```
+
+The result will look like this:
+
+```ts
+[
+  [
+    '0x1234567890123456789012345678901234567890',
+    '0xAbc123def456aBc123def456aBc123DEf456ABc1'
+  ],
+  BigNumber { _hex: '0x01', _isBigNumber: true }
+]
+```
+
+which is the same as the `initData` we passed in the previous section. Please note that the addresses are in formatted mixed-case (aka. a Checksum Address), and the number `1` is a `BigNumber`. You can convert it to a number with `toNumber()`.

@@ -256,13 +256,26 @@ This note is not technically special; it just has a `"variant"` field to indicat
 
 #### Query Achievement Notes
 
-You can query the note from the indexer with the `variant` field to get the list of achievement notes:
+##### Query Achievement Notes Published by a Character
+
+You can query with the `variant` field in `indexer.getNotes` to get the list of achievement notes published by a character
 
 ```ts
 const { list } = await indexer.getNotes({
   characterId: 42,
   variant: "achievement",
 });
+```
+
+##### Query Achievement Notes Minted by an address
+
+You can query with the `variant` field in `indexer.getMintedNotesOfAddress` to get the list of achievement notes minted by an address
+
+```ts
+const { list } = await indexer.getMintedNotesOfAddress(
+  "0x1234567890123456789012345678901234567890",
+  { variant: "achievement" },
+);
 ```
 
 #### Attach Mint Module

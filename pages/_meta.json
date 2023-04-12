@@ -15,6 +15,12 @@
 		"type": "page",
 		"title": "SDK"
 	},
+	"react": {
+		"type": "page",
+		"title": "React Kits ↗",
+		"href": "https://crossbell-dev.vercel.app",
+		"newWindow": true
+	},
 	"about": {
 		"type": "page",
 		"title": "About"

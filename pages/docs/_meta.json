@@ -1,6 +1,9 @@
 {
 	"index": "",
-	"concepts": "Concepts",
+	"concepts": "Basic Concepts",
+	"protocol": "Protocol",
+	"scenarios": "Scenarios",
+	"integration": "Integration",
 	"contracts": {
 		"title": "Contract ↗",
 		"href": "https://crossbell-box.github.io/Crossbell-Contracts/",

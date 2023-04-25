@@ -1,9 +1,63 @@
 ---
 title: Module Store
+description: Module Store
 ---
 
 # Module Store
 
-import ModuleStore from '@/components/module-store'
+import { useSSG } from 'nextra/ssg'
+import { Code, Pre } from 'nextra/components'
+
+export const config = {
+	runtime: 'edge',
+}
+
+export const getStaticProps = async () => {
+  const list = await fetch(
+    'https://raw.githubusercontent.com/Crossbell-Box/Crossbell-Contracts/main/deployments/modules.json'
+  ).then(res => res.json())
+
+  return {
+    props: {
+      ssg: {
+        list: list
+      }
+    },
+    revalidate: 60,
+  }
+}
+
+export const ModuleStore = () => {
+  // Get the data from SSG, and render it as a component.
+  const { list } = useSSG()
+  return <div>
+    <p>Currently there are {list.length} modules available.</p>
+
+    <br />
+
+    {list.map(module => (
+      <div key={module.id}>
+        <h2 className="text-3xl">
+          <Code>{module.name}</Code>{' '}
+          <span
+            className="text-sm uppercase bg-yellow-300 text-black rounded-md p-1"
+            title="Mint Module"
+          >
+            {module.type}
+          </span>
+        </h2>
+
+        <Pre
+          hasCopyCode
+          filename="metadata"
+          data-lang="json"
+          data-theme="default"
+        >
+          {JSON.stringify(module, null, 2)}
+        </Pre>
+      </div>
+    ))}
+  </div>
+}
 
 <ModuleStore />

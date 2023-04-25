@@ -77,8 +77,13 @@ const config: DocsThemeConfig = {
 	faviconGlyph: '🔔',
 	docsRepositoryBase: 'https://github.com/Crossbell-Box/docs/tree/main',
 	useNextSeoProps() {
-		const { asPath } = useRouter()
-		const { frontMatter } = useConfig()
+		const { asPath, route } = useRouter()
+		const { title, frontMatter } = useConfig()
+		const socialCard =
+      route === '/' || !title
+        ? 'https://docs.crossbell.io/og.jpeg'
+				: `https://docs.crossbell.io/api/og?title=${title}&subtitle=${frontMatter.description}`
+
 		if (asPath !== '/') {
 			return {
 				titleTemplate: '%s – Crossbell',
@@ -88,7 +93,7 @@ const config: DocsThemeConfig = {
 				},
 				openGraph: {
 					images: [
-						{ url: frontMatter.image || 'https://nextra.vercel.app/og.png' },
+						{ url: frontMatter.image || socialCard },
 					],
 				},
 				additionalMetaTags: [
@@ -107,9 +112,9 @@ const config: DocsThemeConfig = {
 		defaultMenuCollapseLevel: 1,
 		toggleButton: true,
 	},
-	head: () => {
-		const { asPath, defaultLocale, locale } = useRouter()
-		const { frontMatter } = useConfig()
+	head: function useHead () {
+		const { asPath, defaultLocale, locale,  } = useRouter()
+		const {  frontMatter } = useConfig()
 		// const url =
 		// 	'https://docs.crossbell.io' +
 		// 	(defaultLocale === locale ? asPath : `/${locale}${asPath}`)

@@ -20,7 +20,7 @@ Our futher steps will be using the `Contract` and `Indexer`. Please refer to the
 You can check if you have a character by checking from the indexer:
 
 ```ts
-const result = await indexer.getCharacters(address)
+const result = await indexer.character.getMany(address)
 console.log(result.list) // character list
 ```
 
@@ -28,10 +28,10 @@ Because a wallet can have multiple characters, the result is a list of character
 
 ## Create a Character
 
-If you don't have a character yet, or you want to create a new one, you can use the [`contract.createCharacter`](/sdk/js/contract/character/create-character#createcharacter) method:
+If you don't have a character yet, or you want to create a new one, you can use the [`contract.character.create`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#create) method:
 
 ```ts
-const result = await contract.createCharacter(
+const result = await contract.character.create(
   address, // wallet address
   'best-character-ever', // handle
   "https://example.com/character-metadata.json", // character metadata
@@ -39,14 +39,14 @@ const result = await contract.createCharacter(
 console.log(result.data) // character id
 ```
 
-The [`handle`](/sdk/js/contract/character/create-character#handle) must be unique when creating a character. This is a unique identifier that will be displayed as `@best-character-ever` in the user interface. If a character with an existing handle is attempted to be created on the Crossbell blockchain, the transaction will be unsuccessful.
+The handle must be unique when creating a character. This is a unique identifier that will be displayed as `@best-character-ever` in the user interface. If a character with an existing handle is attempted to be created on the Crossbell blockchain, the transaction will be unsuccessful.
 
 ### Check if a Handle is Available
 
 To ensure that the handle is available before creating a character, you can query from the indexer:
 
 ```ts
-const result = await indexer.getCharactersByHandle('best-character-ever')
+const result = await indexer.character.getByHandle('best-character-ever')
 console.log(result.data) // a character or null
 ```
 
@@ -80,7 +80,7 @@ It can be hosted on any web server. It can be `ipfs://` URL. For example, here i
 You can create a character with metadata content object directly:
 
 ```ts
-const result = await contract.createCharacter(
+const result = await contract.character.create(
   address, // wallet address
   'best-character-ever', // handle
   {
@@ -103,23 +103,21 @@ import { Callout } from 'nextra-theme-docs'
   Before attaching a link module to a character, please refer to the [Concepts - Mint/Link Module](/docs/concepts/link-mint-module) section to learn more about what a link module is.
 </Callout>
 
-// TODO @songkeys
+{/* TODO @songkeys */}
 
 Note that you won't be able to change the link module after the character is created.
-
-Please refer to the [`linkModule` options API](/sdk/js/contract/character/create-character#optionslinkmodule) for more details.
 
 ## Update a Character
 
 You can update a character using a variety of methods. For example:
 
-- [Update handle](/sdk/js/contract/character/update-handle)
-- [Update metadata](/sdk/js/contract/character/update-metadata)
-- [Switch primary character](/sdk/js/contract/character/switch-primary-character)
+- [Update handle](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#setHandle)
+- [Update metadata](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#setMetadata)
+- [Switch primary character](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#setPrimaryId)
 
 ## Delete a Character
 
-- [Burn character](/sdk/js/contract/character/burn-character)
+- [Burn character](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#burn)
 
 ## Topics
 
@@ -136,7 +134,7 @@ Let's say we have a character `42` with the following metadata:
 }
 ```
 
-If this character wants to add a new avatar, we can use the [`contract.changeCharacterMetadata`](/sdk/js/contract/character/update-metadata#changecharactermetadata) method:
+If this character wants to add a new avatar, we can use the [`contract.character.changeMetadata`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#changeMetadata) method:
 
 ```ts
 contract.changeCharacterMetadata('42', metadata => {
@@ -214,8 +212,6 @@ contract.changeCharacterMetadata(42, metadata => {
 
 #### Pitfall: Overwriting vs Merging
 
-We are using the [`contract.changeCharacterMetadata`](/sdk/js/contract/character/update-metadata#changecharactermetadata) method to update the character metadata. This method helps us to update the metadata with **merging** instead of **overwriting**.
+We are using the [`contract.character.changeMetadata`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#changeMetadata) method to update the character metadata. This method helps us to update the metadata with **merging** instead of **overwriting**.
 
-There is another method called [`contract.setCharacterMetadata`](/sdk/js/contract/character/update-metadata#setcharacteruri). This method will **overwrite** the metadata with the new metadata, which in most cases is NOT what we want because it will remove all the existing metadata of the character.
-
-Please refer to [Contract API - Update Metadata](/sdk/js/contract/character/update-metadata) to learn more.
+There is another method called [`contract.character.setCharacterMetadata`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.CharacterContract.html#setMetadata). This method will **overwrite** the metadata with the new metadata, which in most cases is NOT what we want because it will remove all the existing metadata of the character.

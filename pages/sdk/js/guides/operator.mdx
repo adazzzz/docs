@@ -20,8 +20,8 @@ An operator can be granted granular permissions to perform certain operations on
 
 You can:
 
-- [`grantOperatorPermissionsForCharacter`](/sdk/js/contract/operator/grant-operator): Grant an operator to a character. The operator can perform certain operations on behave of the character.
-- [`grantOperatorsForNote`](/sdk/js/contract/operator/grant-operator): Grant an operator to a note. The operator can edit the note.
+- [`operator.grantForCharacter`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.OperatorContract.html#grantForCharacter): Grant an operator to a character. The operator can perform certain operations on behave of the character.
+- [`operator.grantForNote`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.OperatorContract.html#grantForNote): Grant an operator to a note. The operator can edit the note.
 
 Please refer to the API documentation for more details.
 
@@ -76,7 +76,7 @@ const data = await indexer.getNoteOperator(42, '0x123456789012345678901234567890
 If you want to sync your tweets from Twitter to Crossbell automatically, here is the way using a robot operator to do it:
 
 1. Create a wallet to play the role of the robot. Set it up on a server to run 24/7 monitoring your Twitter account.
-2. Grant the robot address the permission `"POST_NOTE"` to be able to post notes on behave of your character. This can be done with [`contract.grantOperatorsForCharacter`](/sdk/js/contract/operator/grant-operator#grantoperatorpermissionsforcharacter).
+2. Grant the robot address the permission `"POST_NOTE"` to be able to post notes on behave of your character. This can be done with [`contract.operator.grantForCharacter`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.OperatorContract.html#grantForCharacter).
 3. When the robot detects a new tweet, it can post a note on behave of your character with [`contract.postNote`](/sdk/js/contract/note/create-note#postnote).
 
 You can basically make a robot to do anything you want on behave of your character. Use your imagination!

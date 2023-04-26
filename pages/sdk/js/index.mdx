@@ -40,9 +40,9 @@ yarn add crossbell.js
 Import `crossbell.js`:
 
 ```ts
-import { Contract } from 'crossbell.js'
+import { createContract } from 'crossbell.js'
 
-const contract = new Contract(window.ethereum)
+const contract = createContract(window.ethereum)
 ```
 
 ### Use Contract
@@ -51,14 +51,14 @@ Now we can use the contract to interact with the Crossbell protocol.
 
 ```ts {2}
 // Example Read API: Get a character by ID
-const { data } = await contract.getCharacter(10);
+const { data } = await contract.character.get(10);
 console.log(data);
 ```
 
 ```ts {3}
 // Example Write API: Create a new character for an address
 try {
-  const result = await contract.createCharacter(
+  const result = await contract.character.create(
     '0x1234567890123456789012345678901234567890',
     'Jason',
     'ipfs://xxxx/metadata.json',
@@ -73,7 +73,7 @@ try {
 
 Want to learn more? Continue on reading the documentation.
 
-You can start by reading the [Guides](/sdk/js/guides/wallet), and learn the details of every API in the [API Reference](/sdk/js/contract).
+You can start by reading the [Guides](/sdk/js/guides/wallet), and learn the details of every API in the [API Reference](/sdk/js/api-reference).
 
 import { Card, Cards } from 'nextra-theme-docs'
 
@@ -89,7 +89,7 @@ import { Card, Cards } from 'nextra-theme-docs'
     arrow
     icon="📚"
     title="API Reference"
-    href="/sdk/js/contract">
+    href="/sdk/js/api-reference">
     <>Read the API reference for every details in `crossbell.js`.</>
   </Card>
 </Cards>

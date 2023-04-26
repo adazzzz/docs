@@ -20,7 +20,7 @@ contract.postNote(
 );
 ```
 
-Please refer to [`postNote`](/sdk/js/contract/note/create-note#postnote) for more details.
+Please refer to [`post`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.NoteContract.html#post) for more details.
 
 ### Note Metadata
 
@@ -76,8 +76,6 @@ import { Callout } from 'nextra-theme-docs'
   Before attaching a link or a module to a note, please refer to the [Concepts - Mint/Link Module](/docs/concepts/link-mint-module) section to learn more about what a module is.
 </Callout>
 
-Please refer to the [`linkModule` options API](/sdk/js/contract/note/create-note#optionslinkmodule-optional) and [`mintModule` options API](/sdk/js/contract/note/create-note#optionsmintmodule-optional) for more details.
-
 ### Mint a Note
 
 After creating a note, everyone (wallets) can mint it.
@@ -100,7 +98,7 @@ This minted note NFT is of ERC721 type. It can be transferred to another address
   It deserves to be noted that minting might fail if the note is attached with a mint module that limits who can mint it. The app should handle this case.
 </Callout>
 
-Please refer to [`mintNote`](/sdk/js/contract/note/mint-note#mintnote) for more details.
+Please refer to [`mint`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.NoteContract.html#mint) for more details.
 
 ### Query Notes
 
@@ -109,7 +107,7 @@ You can query the notes from the indexer.
 For example, to query the notes of character `42`:
 
 ```ts
-const { list } = await indexer.getNotes({
+const { list } = await indexer.note.getMany({
   characterId: 42,
 });
 ```
@@ -120,11 +118,11 @@ const { list } = await indexer.getNotes({
 
 #### Reply
 
-A character can reply to a note. This is done by using the [`contract.postNoteForNote`](/sdk/js/contract/note/create-note#postnotefornote) method:
+A character can reply to a note. This is done by using the [`contract.note.postForNote`](https://crossbell-box.github.io/crossbell.js/classes/index.contracts.NoteContract.html#postForNote) method:
 
 ```ts
 // character ID 42 replies to note ID 43-5 (the 5th note of character 43)
-const result = contract.postNoteForNote(
+const result = contract.note.postForNote(
   42, // character ID
   { content: "Thank you!" }, // note metadata
   43, // target character ID
@@ -136,7 +134,7 @@ console.log(result) // The note ID of the reply, e.g. 1
 To query all the replies of the note `43-5`:
 
 ```ts
-const { list } = await indexer.getNotes({
+const { list } = await indexer.note.getMany({
   toCharacterId: 43,
   toNoteId: 5,
 });
@@ -149,7 +147,7 @@ Of course, the character `43` can also reply to the reply:
 
 ```ts
 // character ID 43 replies to note ID 42-6 (the 6th note of character 42)
-contract.postNoteForNote(
+contract.note.postForNote(
   43, // character ID
   { content: "You're welcome!" }, // note metadata
   42, // target character ID
@@ -185,7 +183,7 @@ async function getNoteThread(
   noteId: number,
   depth: number = 0,
 ): Promise<Note[]> {
-  const { list } = await indexer.getNotes({
+  const { list } = await indexer.note.getMany({
     toCharacterId: characterId,
     toNoteId: noteId,
   });
@@ -207,7 +205,7 @@ async function getNoteThread(
 Or using the `includeNestedNotes` parameter to fetch them in one query (recommended):
 
 ```ts
-const { list } = await indexer.getNotes({
+const { list } = await indexer.note.getMany({
   toCharacterId: 43,
   toNoteId: 5,
   includeNestedNotes: true,
@@ -269,10 +267,10 @@ const { list } = await indexer.getNotes({
 
 ##### Query Achievement Notes Minted by an Address
 
-You can query with the `variant` field in `indexer.getMintedNotesOfAddress` to get the list of achievement notes minted by an address
+You can query with the `variant` field in `indexer.mintedNote.getManyOfAddress` to get the list of achievement notes minted by an address
 
 ```ts
-const { list } = await indexer.getMintedNotesOfAddress(
+const { list } = await indexer.mintedNote.getManyOfAddress(
   "0x1234567890123456789012345678901234567890",
   { variant: "achievement" },
 );
@@ -285,7 +283,7 @@ Just as other notes, an achievement note can be attached with a mint module.
 One useful example is to limit the group of people who can mint the achievement note. In this case, `ApproveMintModule` can be used.
 
 ```ts
-contract.postNote(
+contract.note.post(
   42, // character ID
   "https://example.com/my-sponsor-nft.json", // note metadata URL
   {
@@ -311,7 +309,7 @@ The above code will attach a `ApproveMintModule` to the achievement note, which 
 As we have seen in the previous section, you can attach the mint module `ApproveMintModule` to a note to restrict who can mint it.
 
 ```ts
-contract.postNote(
+contract.note.post(
   42, // character ID
   "https://example.com/my-sponsor-nft.json", // note metadata URL
   {
@@ -332,10 +330,10 @@ In this example, only addresses `0x1234567890123456789012345678901234567890` and
 
 How do we recover the mint module information from a note? Here is an example.
 
-For example, the above code posted a note `42-5` (Character ID: `42`, Note Id: `5`), you can query the mint module attached with `indexer.getMintModules`:
+For example, the above code posted a note `42-5` (Character ID: `42`, Note Id: `5`), you can query the mint module attached with `indexer.mintModule.getMany`:
 
 ```ts
-const { list } = await indexer.getMintModules({
+const { list } = await indexer.mintModule.getMany({
   toCharacterId: 42,
   toNoteId: 5,
 });
@@ -367,10 +365,11 @@ The result will look like this:
 }
 ```
 
-`initData` is the encoded init data string we passed in the previous section. We can decode it with `contract.decodeModuleInitData`:
+`initData` is the encoded init data string we passed in the previous section. We can decode it with `decodeModuleInitData`:
 
 ```ts
-const decodedInitData = await contract.decodeModuleInitData(
+import { decodeModuleInitData } from 'crossbell.js'
+const decodedInitData = await decodeModuleInitData(
   '0x328610484ba1faae0fcdee44990d199cd84c8608',
   '0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000001234567890123456789012345678901234567890000000000000000000000000abc123def456abc123def456abc123def456abc1',
 );
@@ -385,8 +384,8 @@ The result will look like this:
     '0x1234567890123456789012345678901234567890',
     '0xAbc123def456aBc123def456aBc123DEf456ABc1'
   ],
-  BigNumber { _hex: '0x01', _isBigNumber: true }
+  1n
 ]
 ```
 
-which is the same as the `initData` we passed in the previous section. Please note that the addresses are in formatted mixed-case (aka. a Checksum Address), and the number `1` is a `BigNumber`. You can convert it to a number with `toNumber()`.
+which is the same as the `initData` we passed in the previous section. Please note that the addresses are in formatted mixed-case (aka. a Checksum Address), and the number `1` is a bigint.

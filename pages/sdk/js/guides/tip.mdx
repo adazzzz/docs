@@ -20,7 +20,7 @@ For example, you are character `42` and you want to tip character `43` with `10`
 First we need to get the token deciamls:
 
 ```ts
-const decimals = await contract.getTokenDecimals() // 18 on Crossbell
+const decimals = await contract.tips.getTokenDecimals() // 18 on Crossbell
 ```
 
 > The token decimals is `18` on Crossbell blockchain. You can hardcode it if you want. But this step is recommended for the sake of future compatibility.
@@ -47,7 +47,7 @@ await contract.tipCharacter(
 To bring it all together:
 
 ```ts
-const decimals = await contract.getTokenDecimals()
+const decimals = await contract.tips.getTokenDecimals()
 const amount = 10 * 10 ** decimals
 await contract.tipCharacter(42, 43, amount)
 ```
@@ -82,7 +82,7 @@ const balance = await contract.getMiraBalanceOfCharacter(42)
 The return value is a wei string, so you may want to convert it to the ether unit:
 
 ```ts
-const decimals = await contract.getTokenDecimals()
+const decimals = await contract.tips.getTokenDecimals()
 const balanceInEther = balance / 10 ** decimals
 ```
 
@@ -97,7 +97,7 @@ To bring it all together:
 
 ```ts
 import { formatUnits } from 'ethers'
-const decimals = await contract.getTokenDecimals()
+const decimals = await contract.tips.getTokenDecimals()
 const balance = await contract.getMiraBalanceOfCharacter(42)
 const balanceInEther = formatUnits(balance, decimals)
 ```
